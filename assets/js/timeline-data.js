@@ -10,6 +10,15 @@ window.TIMELINE_DATA = {
             iconAlt: "Stemma imperiale austriaco del Congresso di Vienna"
         },
         {
+            name: "Moti rivoluzionari e fermento costituzionale",
+            start: 1820,
+            end: 1848,
+            color: "rgba(121,134,203,0.32)",
+            lane: 5,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Indipendenza_italiana_1848.jpg",
+            iconAlt: "Scene delle Cinque Giornate di Milano"
+        },
+        {
             name: "Carte costituzionali del 1848",
             start: 1848,
             end: 1849,
@@ -132,13 +141,22 @@ window.TIMELINE_DATA = {
             date: "1848-03-04",
             title: "Statuto Albertino",
             description: "Carlo Alberto concede al Regno di Sardegna una costituzione flessibile che, dal 1861, reggerà il Regno d'Italia fino al 1948.",
-            level: 1
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Frontespizio_Statuto_Albertino.jpg"
+        },
+        {
+            date: "1848-03-23",
+            title: "Prima guerra d'indipendenza",
+            description: "Dopo le Cinque Giornate di Milano, Carlo Alberto dichiara guerra all'Austria.",
+            level: 2,
+            image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Indipendenza_italiana_1848.jpg"
         },
         {
             date: "1861-03-17",
             title: "Proclamazione del Regno d'Italia",
             description: "Lo Statuto Albertino viene esteso al nuovo Stato unitario guidato da Vittorio Emanuele II.",
-            level: 1
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Proclamazione_del_Regno_d%27Italia.jpg"
         },
         {
             date: "1865-03-20",
@@ -151,6 +169,13 @@ window.TIMELINE_DATA = {
             title: "Codici del 1865",
             description: "Entrano in vigore il Codice civile Pisanelli, il Codice di procedura civile e il Codice di commercio, che uniformano il diritto privato del Regno.",
             level: 2
+        },
+        {
+            date: "1870-09-20",
+            title: "Breccia di Porta Pia",
+            description: "L'esercito italiano entra a Roma ponendo fine al potere temporale del Papa.",
+            level: 2,
+            image: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Breccia_di_Porta_Pia.jpg"
         },
         {
             date: "1889-06-30",
@@ -171,6 +196,13 @@ window.TIMELINE_DATA = {
             level: 3
         },
         {
+            date: "1915-05-24",
+            title: "Italia entra nella Grande Guerra",
+            description: "Il Regno d'Italia si schiera con l'Intesa ed entra nella Prima guerra mondiale.",
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Italian_troops_advancing_during_the_Battle_of_the_Piave.jpg"
+        },
+        {
             date: "1919-12-15",
             title: "Legge elettorale proporzionale",
             description: "La riforma elettorale del 1919 abolisce il collegio uninominale e introduce il sistema proporzionale alla Camera.",
@@ -180,7 +212,8 @@ window.TIMELINE_DATA = {
             date: "1922-10-28",
             title: "Marcia su Roma",
             description: "L'ascesa di Mussolini avvia il regime fascista e prepara la torsione autoritaria dello Stato liberale.",
-            level: 1
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/9/90/Marcia_su_Roma.jpg"
         },
         {
             date: "1923-11-18",
@@ -207,6 +240,13 @@ window.TIMELINE_DATA = {
             level: 1
         },
         {
+            date: "1940-06-10",
+            title: "Italia nella Seconda guerra mondiale",
+            description: "Mussolini dichiara guerra a Francia e Regno Unito, trascinando il Paese nel conflitto globale.",
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Italian_troops_in_North_Africa_1940.jpg"
+        },
+        {
             date: "1940-10-28",
             title: "Nuovo codice di procedura civile",
             description: "Il codice del 1940 riorganizza il processo civile moderno e entrerà pienamente in vigore nei primi anni Quaranta.",
@@ -222,7 +262,8 @@ window.TIMELINE_DATA = {
             date: "1943-07-25",
             title: "Caduta di Mussolini",
             description: "Il Gran Consiglio destituisce il duce: comincia la fase luogotenenziale e il percorso verso la democrazia costituzionale.",
-            level: 1
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Benito_Mussolini_arrested_1943.jpg"
         },
         {
             date: "1945-02-01",
