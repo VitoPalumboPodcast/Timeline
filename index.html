@@ -170,7 +170,7 @@
             top: 50%;
             left: 0;
             transform-origin: left center;
-            transform: scale(1);
+            transform: translateY(-50%) scale(1);
             will-change: transform;
         }
 
@@ -722,7 +722,7 @@
             }
 
             wrapper.style.transform = `translateX(${state.translate}px)`;
-            inner.style.transform = `scale(${state.zoom}) translateY(-50%)`;
+            inner.style.transform = `translateY(-50%) scale(${state.zoom})`;
             state.timelineWidth = scaledWidth;
             root.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
             const periodScale = clamp(1.45 / state.zoom, 1, 2.4);
