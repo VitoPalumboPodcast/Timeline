@@ -57,21 +57,92 @@ document.addEventListener('DOMContentLoaded', () => {
     const laneOffsets = [-110, 90, -180];
     const levelOffsets = { 1: 0, 2: -110, 3: -200 };
 
+    const tickElements = [];
+
+    const tickConfigs = [
+        {
+            maxZoom: 0.6,
+            step: 100,
+            majorStep: 100,
+            formatLabel: (year) => {
+                const century = Math.floor((year - 1) / 100) + 1;
+                const romanNumerals = [
+                    '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
+                    'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX',
+                    'XX', 'XXI'
+                ];
+                const roman = romanNumerals[century] ?? century;
+                return `${roman} secolo`;
+            }
+        },
+        {
+            maxZoom: 0.85,
+            step: 50,
+            majorStep: 100
+        },
+        {
+            maxZoom: 1.4,
+            step: 10,
+            majorStep: 50
+        },
+        {
+            maxZoom: 2.4,
+            step: 5,
+            majorStep: 25
+        },
+        {
+            maxZoom: Infinity,
+            step: 1,
+            majorStep: 5
+        }
+    ];
+
+    const getCompactPeriodLabel = (name) => {
+        const clean = name.replace(/\s+•\s+/g, ' · ').trim();
+        return clean.length > 22 ? `${clean.slice(0, 22).trim()}…` : clean;
+    };
+
     const addTicks = () => {
-        const yearsStep = totalYears > 100 ? 5 : 2;
-        for (let year = minYear; year <= maxYear; year += yearsStep) {
+        for (let year = minYear; year <= maxYear; year++) {
             const tick = document.createElement('div');
             tick.className = 'timeline-tick';
-            if (year % 10 === 0) tick.classList.add('major');
             const position = ((year - minYear) / totalYears) * baseWidth;
             tick.style.left = `${position}px`;
 
             const label = document.createElement('div');
             label.className = 'timeline-tick-label';
-            label.textContent = year;
             tick.appendChild(label);
             inner.appendChild(tick);
+
+            tickElements.push({ tick, label, year });
         }
+    };
+
+    const updateTickDetail = () => {
+        if (tickElements.length === 0) return;
+
+        const config = tickConfigs.find((entry) => state.zoom < entry.maxZoom) || tickConfigs[tickConfigs.length - 1];
+        const anchor = Math.ceil(minYear / config.step) * config.step;
+
+        tickElements.forEach(({ tick, label, year }) => {
+            const isFirstYear = year === minYear;
+            const isLastYear = year === maxYear;
+            const isAligned = year >= anchor && ((year - anchor) % config.step === 0);
+            const visible = isFirstYear || isLastYear || isAligned;
+            if (!visible) {
+                tick.style.display = 'none';
+                return;
+            }
+
+            tick.style.display = '';
+            const majorStep = config.majorStep ?? config.step;
+            const isMajor = year % majorStep === 0;
+            tick.classList.toggle('major', isMajor);
+            const formatter = (isFirstYear || isLastYear)
+                ? ((value) => value)
+                : (config.formatLabel ?? ((value) => value));
+            label.textContent = `${formatter(year)}`;
+        });
     };
 
     const addPeriods = () => {
@@ -95,6 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
             mini.style.width = `${(width / baseWidth) * 100}%`;
             mini.style.top = `${50 + period.lane * 18}%`;
             minimap.appendChild(mini);
+
+            const miniLabel = document.createElement('div');
+            miniLabel.className = 'minimap-period-label';
+            miniLabel.textContent = getCompactPeriodLabel(period.name);
+            miniLabel.title = period.name;
+            miniLabel.style.left = `${(start / baseWidth) * 100}%`;
+            miniLabel.style.width = `${(width / baseWidth) * 100}%`;
+            minimap.appendChild(miniLabel);
         });
     };
 
@@ -182,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             inner.classList.add('zoom-high');
         }
+        updateTickDetail();
     };
 
     const updateMinimap = () => {
@@ -219,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         wrapper.style.transform = `translateX(${state.translate}px)`;
-        inner.style.transform = `scale(${state.zoom}) translateY(-50%)`;
+        inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
         state.timelineWidth = scaledWidth;
         updateZoomLevel();
         updateDetailLevels();
@@ -328,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addTicks();
         addPeriods();
         addEvents();
+        updateTickDetail();
         updateTransforms();
     };
 
