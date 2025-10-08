@@ -27,6 +27,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const yearIndicator = document.querySelector('.year-indicator');
     const yearBadge = document.querySelector('.year-badge');
     const particlesLayer = document.querySelector('.bg-particles');
+    const themeToggle = document.querySelector('.theme-toggle');
+    const rootElement = document.documentElement;
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const themeStorageKey = 'timeline-theme';
+
+    const normalizeTheme = (value) => {
+        if (value === 'light' || value === 'dark') {
+            return value;
+        }
+        return null;
+    };
+
+    const updateToggleLabels = (theme) => {
+        if (!themeToggle) return;
+        const nextTheme = theme === 'light' ? 'dark' : 'light';
+        const label = nextTheme === 'light' ? 'Attiva tema chiaro' : 'Attiva tema scuro';
+        themeToggle.dataset.theme = theme;
+        themeToggle.setAttribute('aria-label', label);
+        themeToggle.setAttribute('aria-pressed', String(theme === 'light'));
+        const srLabel = themeToggle.querySelector('.sr-only');
+        if (srLabel) {
+            srLabel.textContent = label;
+        }
+    };
+
+    const applyTheme = (theme) => {
+        const active = theme === 'light' ? 'light' : 'dark';
+        if (active === 'light') {
+            rootElement.setAttribute('data-theme', 'light');
+        } else {
+            rootElement.removeAttribute('data-theme');
+        }
+        updateToggleLabels(active);
+    };
+
+    let storedTheme = null;
+    try {
+        storedTheme = normalizeTheme(localStorage.getItem(themeStorageKey));
+    } catch (error) {
+        console.warn('Impossibile accedere alle preferenze del tema.', error);
+    }
+
+    let userPreference = storedTheme !== null;
+    let activeTheme = userPreference
+        ? storedTheme
+        : (prefersDarkScheme.matches ? 'dark' : 'light');
+
+    applyTheme(activeTheme);
+
+    const handleSystemThemeChange = (event) => {
+        if (userPreference) return;
+        activeTheme = event.matches ? 'dark' : 'light';
+        applyTheme(activeTheme);
+    };
+
+    if (typeof prefersDarkScheme.addEventListener === 'function') {
+        prefersDarkScheme.addEventListener('change', handleSystemThemeChange);
+    } else if (typeof prefersDarkScheme.addListener === 'function') {
+        prefersDarkScheme.addListener(handleSystemThemeChange);
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            activeTheme = activeTheme === 'dark' ? 'light' : 'dark';
+            userPreference = true;
+            try {
+                localStorage.setItem(themeStorageKey, activeTheme);
+            } catch (error) {
+                console.warn('Impossibile salvare la preferenza del tema.', error);
+            }
+            applyTheme(activeTheme);
+        });
+    }
 
     if (!shell || !wrapper || !inner || !mainLine) {
         console.error('Missing timeline container elements.');
