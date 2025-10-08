@@ -66,8 +66,8 @@ window.TIMELINE_DATA = {
             end: 1876,
             color: "rgba(129,212,250,0.32)",
             lane: 0,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Camillo_benso_count_of_Cavour.jpg",
-            iconAlt: "Camillo Benso, conte di Cavour",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Antorcha.svg",
+            iconAlt: "Torcia simbolica associata alla Destra storica",
             description: "La classe dirigente moderata consolida il Regno con centralizzazione fiscale, ordine pubblico e il perseguimento del pareggio di bilancio."
         },
         {
