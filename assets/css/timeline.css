@@ -654,7 +654,8 @@ h1 {
 
 .minimap-period-label {
     position: absolute;
-    bottom: 14px;
+    --label-row: 0;
+    bottom: calc(14px + var(--label-row) * 18px);
     left: 0;
     padding-left: 10px;
     font-size: 0.72rem;

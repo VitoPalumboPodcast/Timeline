@@ -187,6 +187,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return clean.length > 22 ? `${clean.slice(0, 22).trim()}…` : clean;
     };
 
+    const layoutMinimapLabels = () => {
+        if (!minimap) return;
+
+        const labels = Array.from(minimap.querySelectorAll('.minimap-period-label'));
+        if (!labels.length) return;
+
+        labels.forEach((label) => {
+            label.style.setProperty('--label-row', '0');
+        });
+
+        const labelData = labels
+            .map((label) => {
+                const rect = label.getBoundingClientRect();
+                return { label, left: rect.left, right: rect.right };
+            })
+            .sort((a, b) => a.left - b.left);
+
+        const rowEndings = [];
+        const gap = 8;
+
+        labelData.forEach(({ label, left, right }) => {
+            let rowIndex = rowEndings.findIndex((end) => left >= end);
+            if (rowIndex === -1) {
+                rowIndex = rowEndings.length;
+                rowEndings.push(right + gap);
+            } else {
+                rowEndings[rowIndex] = right + gap;
+            }
+            label.style.setProperty('--label-row', String(rowIndex));
+        });
+    };
+
     const addTicks = () => {
         for (let year = minYear; year <= maxYear; year++) {
             const tick = document.createElement('div');
@@ -307,6 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
             miniLabel.style.width = `${(width / baseWidth) * 100}%`;
             minimap.appendChild(miniLabel);
         });
+
+        requestAnimationFrame(layoutMinimapLabels);
     };
 
     const addEvents = () => {
@@ -547,6 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', () => {
         updateTransforms();
+        requestAnimationFrame(layoutMinimapLabels);
     });
 
     const init = () => {
