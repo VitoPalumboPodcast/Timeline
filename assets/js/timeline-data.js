@@ -1,69 +1,69 @@
 window.TIMELINE_DATA = {
     periods: [
         {
-            name: "Età della Restaurazione",
+            name: "Restaurazione e reazione",
             start: 1815,
-            end: 1830,
+            end: 1847,
             color: "rgba(121,134,203,0.45)",
             lane: 2,
             icon: "https://upload.wikimedia.org/wikipedia/commons/9/96/Imperial_Coat_of_Arms_of_the_Empire_of_Austria_%281815%29.svg",
             iconAlt: "Stemma imperiale austriaco del Congresso di Vienna"
         },
         {
-            name: "Moti rivoluzionari e prime riforme",
-            start: 1831,
-            end: 1847,
-            color: "rgba(121,134,203,0.45)",
+            name: "Carte costituzionali del 1848",
+            start: 1848,
+            end: 1849,
+            color: "rgba(244,143,177,0.45)",
             lane: 0,
-            icon: "https://s3.eu-central-1.wasabisys.com/evulpo-drive-mirror/it_IT/summary_assets/summary_asset_1670344196.svg",
-            iconAlt: "Giuseppe Mazzini"
+            icon: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Frontespizio_Statuto_Albertino.jpg",
+            iconAlt: "Frontespizio dello Statuto Albertino"
         },
         {
-            name: "Risorgimento e Unità d'Italia",
+            name: "Risorgimento e unificazione politica",
             start: 1848,
             end: 1870,
-            color: "rgba(244,143,177,0.45)",
+            color: "rgba(244,143,177,0.32)",
             lane: 1,
             icon: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Garibaldi_%281866%29.svg",
             iconAlt: "Giuseppe Garibaldi"
         },
         {
-            name: "Regno d'Italia",
+            name: "Unificazione amministrativa e codici",
             start: 1861,
-            end: 1946,
-            color: "rgba(244,143,177,0.32)",
+            end: 1890,
+            color: "rgba(129,212,250,0.45)",
             lane: 3,
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Italy_%281861-1946%29_crowned.svg",
             iconAlt: "Bandiera del Regno d'Italia"
         },
         {
-            name: "Età Umbertina",
-            start: 1878,
-            end: 1900,
-            color: "rgba(129,212,250,0.45)",
-            lane: 0,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Lesser_coat_of_arms_of_the_Kingdom_of_Italy_%281890%29.svg",
-            iconAlt: "Stemma minore del Regno d'Italia nell'età umbertina"
+            name: "Crisi liberale e riforme",
+            start: 1912,
+            end: 1919,
+            color: "rgba(255,214,126,0.45)",
+            lane: 2
         },
-        { name: "Età Giolittiana", start: 1901, end: 1914, color: "rgba(129,212,250,0.45)", lane: 2 },
-        { name: "Grande Guerra", start: 1914, end: 1918, color: "rgba(255,214,126,0.45)", lane: 1 },
-        { name: "Dopoguerra e crisi", start: 1919, end: 1922, color: "rgba(255,214,126,0.45)", lane: 0 },
         {
-            name: "Ventennio fascista",
-            start: 1922,
+            name: "Regime fascista e legislazione autoritaria",
+            start: 1925,
             end: 1943,
             color: "rgba(255,138,128,0.45)",
             lane: 1,
             icon: "https://upload.wikimedia.org/wikipedia/commons/7/74/National_Fascist_Party_logo.svg",
             iconAlt: "Stemma del Partito Nazionale Fascista"
         },
-        { name: "Seconda guerra mondiale", start: 1940, end: 1945, color: "rgba(255,138,128,0.45)", lane: 2 },
-        { name: "Transizione alla Repubblica", start: 1943, end: 1948, color: "rgba(186,104,200,0.45)", lane: 0 },
         {
-            name: "Italia repubblicana",
-            start: 1948,
-            end: 2023,
+            name: "Transizione alla democrazia",
+            start: 1943,
+            end: 1946,
             color: "rgba(186,104,200,0.45)",
+            lane: 0
+        },
+        {
+            name: "Costruzione della Repubblica",
+            start: 1946,
+            end: 1950,
+            color: "rgba(186,104,200,0.35)",
             lane: 2,
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/00/Emblem_of_Italy.svg",
             iconAlt: "Emblema della Repubblica Italiana"
@@ -73,54 +73,137 @@ window.TIMELINE_DATA = {
         {
             date: "1815-06-09",
             title: "Congresso di Vienna",
-            description: "Ridisegna la mappa d'Italia ed Europa restaurando le monarchie assolute.",
-            level: 2,
+            description: "La Restaurazione ripristina gli antichi Stati italiani e rimuove gradualmente i codici napoleonici, che restano però un modello giuridico di riferimento.",
+            level: 1,
             image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Imperial_Coat_of_Arms_of_the_Empire_of_Austria_%281815%29.svg"
         },
-        { date: "1820-07-02", title: "Moti del 1820-1821", description: "Carbonari e liberali insorgono nel Regno delle Due Sicilie e nel Regno di Sardegna.", level: 3 },
-        { date: "1831-02-04", title: "Moti del 1831", description: "Nuove insurrezioni nell'Italia centrale e nascita della Giovine Italia di Mazzini.", level: 2 },
-        { date: "1848-03-18", title: "Cinque Giornate di Milano", description: "L'insurrezione milanese contro il dominio austriaco apre la stagione rivoluzionaria.", level: 1 },
-        { date: "1849-02-09", title: "Repubblica Romana", description: "Breve esperimento repubblicano guidato da Mazzini, Saffi e Armellini con Garibaldi alle armi.", level: 2 },
-        { date: "1859-04-26", title: "Seconda guerra d'indipendenza", description: "Il Regno di Sardegna, alleato con la Francia, affronta l'Austria.", level: 1 },
-        { date: "1860-05-05", title: "Spedizione dei Mille", description: "Garibaldi e i volontari partono da Quarto conquistando il Regno delle Due Sicilie.", level: 1, image: "https://upload.wikimedia.org/wikipedia/commons/d/d8/Garibaldi_and_his_volunteers_in_Sicily_1860.jpg" },
-        { date: "1861-03-17", title: "Proclamazione del Regno d'Italia", description: "Vittorio Emanuele II diventa il primo re d'Italia.", level: 1 },
         {
-            date: "1861-06-01",
-            title: "Destra storica al governo",
-            description: "La Destra storica guida l'unificazione politica puntando su liberalismo, centralismo amministrativo e libero scambio.",
-            level: 3,
-            image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Antorcha.svg"
-        },
-        { date: "1870-09-20", title: "Breccia di Porta Pia", description: "L'esercito italiano entra a Roma ponendo fine al potere temporale del Papa.", level: 1 },
-        {
-            date: "1876-03-25",
-            title: "Governo della Sinistra storica",
-            description: "Agostino Depretis inaugura il trasformismo con protezionismo economico, riforme sociali e politiche coloniali.",
+            date: "1848-02-10",
+            title: "Carte costituzionali italiane del 1848",
+            description: "Tra febbraio e marzo ottengono una carta il Regno delle Due Sicilie, la Toscana, Parma e lo Stato Pontificio. Nota: quasi tutte verranno sospese entro l'anno.",
             level: 2
         },
-        { date: "1882-05-20", title: "Triplice Alleanza", description: "Italia, Germania e Austria-Ungheria firmano un'alleanza difensiva.", level: 2 },
-        { date: "1896-03-01", title: "Battaglia di Adua", description: "Grave sconfitta italiana in Etiopia che scuote il colonialismo crispino.", level: 2 },
         {
-            date: "1901-02-15",
-            title: "Inizio della fase giolittiana",
-            description: "Giovanni Giolitti inaugura una stagione di modernizzazione, riforme sociali e sviluppo industriale.",
+            date: "1848-03-04",
+            title: "Statuto Albertino",
+            description: "Carlo Alberto concede al Regno di Sardegna una costituzione flessibile che, dal 1861, reggerà il Regno d'Italia fino al 1948.",
+            level: 1
+        },
+        {
+            date: "1861-03-17",
+            title: "Proclamazione del Regno d'Italia",
+            description: "Lo Statuto Albertino viene esteso al nuovo Stato unitario guidato da Vittorio Emanuele II.",
+            level: 1
+        },
+        {
+            date: "1865-03-20",
+            title: "Leggi di unificazione amministrativa",
+            description: "La legge 20 marzo 1865 n. 2248 (allegati A-F) centralizza amministrazione, contenzioso, sicurezza, opere pubbliche e finanza.",
+            level: 1
+        },
+        {
+            date: "1865-06-01",
+            title: "Codici del 1865",
+            description: "Entrano in vigore il Codice civile Pisanelli, il Codice di procedura civile e il Codice di commercio, che uniformano il diritto privato del Regno.",
+            level: 2
+        },
+        {
+            date: "1889-06-30",
+            title: "Codice penale Zanardelli",
+            description: "Approvato il codice penale liberale che abolisce la pena di morte per i reati comuni (in vigore dal 1890).",
+            level: 1
+        },
+        {
+            date: "1912-06-30",
+            title: "Suffragio universale maschile",
+            description: "La riforma elettorale estende il voto alla quasi totalità dei cittadini maschi adulti, ampliando la rappresentanza politica.",
+            level: 2
+        },
+        {
+            date: "1913-10-01",
+            title: "Nuovo codice di procedura penale",
+            description: "Il codice del 1913 introduce garanzie processuali più ampie rispetto all'impianto ottocentesco.",
             level: 3
         },
-        { date: "1911-09-29", title: "Guerra di Libia", description: "L'Italia dichiara guerra all'Impero Ottomano per Tripolitania e Cirenaica.", level: 2 },
-        { date: "1914-07-28", title: "Italia neutrale", description: "Allo scoppio della Grande Guerra il governo dichiara la neutralità.", level: 3 },
-        { date: "1915-05-24", title: "Intervento nella Grande Guerra", description: "L'Italia entra in guerra al fianco dell'Intesa dopo il Patto di Londra.", level: 1 },
-        { date: "1917-10-24", title: "Disfatta di Caporetto", description: "L'esercito italiano è travolto dall'offensiva austro-tedesca.", level: 1 },
-        { date: "1918-11-04", title: "Armistizio di Villa Giusti", description: "L'Italia celebra la vittoria con la resa dell'Austria-Ungheria.", level: 1 },
-        { date: "1919-03-23", title: "Fasci di combattimento", description: "Benito Mussolini fonda il movimento a Milano.", level: 2 },
-        { date: "1922-10-28", title: "Marcia su Roma", description: "Il re affida a Mussolini l'incarico di formare il governo.", level: 1 },
-        { date: "1924-06-10", title: "Delitto Matteotti", description: "L'assassinio del deputato socialista provoca una crisi politica.", level: 2 },
-        { date: "1929-02-11", title: "Patti Lateranensi", description: "Accordo tra Stato e Chiesa che chiude la Questione Romana.", level: 2 },
-        { date: "1938-09-05", title: "Leggi razziali fasciste", description: "Il regime vara provvedimenti discriminatori contro gli ebrei.", level: 1 },
-        { date: "1940-06-10", title: "Entrata nella Seconda Guerra Mondiale", description: "L'Italia dichiara guerra a Francia e Regno Unito.", level: 1 },
-        { date: "1943-07-25", title: "Caduta di Mussolini", description: "Il Gran Consiglio del Fascismo destituisce il duce.", level: 1 },
-        { date: "1944-06-04", title: "Liberazione di Roma", description: "Le forze alleate entrano nella capitale.", level: 1 },
-        { date: "1946-06-02", title: "Referendum istituzionale", description: "Gli italiani scelgono la Repubblica e le donne votano per la prima volta.", level: 1, image: "https://upload.wikimedia.org/wikipedia/commons/1/13/Voting_in_Italy_1946.jpg" },
-        { date: "1947-02-10", title: "Trattato di Parigi", description: "L'Italia firma le condizioni di pace con gli Alleati.", level: 2 },
-        { date: "1948-01-01", title: "Costituzione repubblicana", description: "Entra in vigore la legge fondamentale dello Stato.", level: 1, image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Italian_Constitution_1948.jpg" }
+        {
+            date: "1919-12-15",
+            title: "Legge elettorale proporzionale",
+            description: "La riforma elettorale del 1919 abolisce il collegio uninominale e introduce il sistema proporzionale alla Camera.",
+            level: 2
+        },
+        {
+            date: "1922-10-28",
+            title: "Marcia su Roma",
+            description: "L'ascesa di Mussolini avvia il regime fascista e prepara la torsione autoritaria dello Stato liberale.",
+            level: 1
+        },
+        {
+            date: "1923-11-18",
+            title: "Legge Acerbo",
+            description: "Il premio di maggioranza alla lista più votata compromette la rappresentanza parlamentare.",
+            level: 2
+        },
+        {
+            date: "1925-12-24",
+            title: "Leggi fascistissime",
+            description: "Tra il 1925 e il 1926 il regime sopprime libertà politiche, scioglie i partiti e istituisce il Tribunale speciale per la difesa dello Stato.",
+            level: 1
+        },
+        {
+            date: "1929-02-11",
+            title: "Patti Lateranensi",
+            description: "Accordi con la Santa Sede: la religione cattolica diventa religione di Stato fino alla revisione del 1984.",
+            level: 2
+        },
+        {
+            date: "1930-10-19",
+            title: "Codici Rocco",
+            description: "Vengono promulgati il codice penale e il codice di procedura penale del regime, in vigore dal 1931 con un'impostazione autoritaria e inquisitoria.",
+            level: 1
+        },
+        {
+            date: "1940-10-28",
+            title: "Nuovo codice di procedura civile",
+            description: "Il codice del 1940 riorganizza il processo civile moderno e entrerà pienamente in vigore nei primi anni Quaranta.",
+            level: 2
+        },
+        {
+            date: "1942-03-16",
+            title: "Codice civile del 1942",
+            description: "Il nuovo codice civile (con il Codice della navigazione) sistematizza persone, famiglia, impresa, lavoro e diritti reali.",
+            level: 1
+        },
+        {
+            date: "1943-07-25",
+            title: "Caduta di Mussolini",
+            description: "Il Gran Consiglio destituisce il duce: comincia la fase luogotenenziale e il percorso verso la democrazia costituzionale.",
+            level: 1
+        },
+        {
+            date: "1945-02-01",
+            title: "Suffragio femminile",
+            description: "Un decreto luogotenenziale riconosce alle donne il diritto di voto attivo e passivo.",
+            level: 2
+        },
+        {
+            date: "1946-06-02",
+            title: "Referendum istituzionale e Costituente",
+            description: "Gli italiani scelgono la Repubblica e eleggono l'Assemblea Costituente incaricata di redigere la nuova Carta.",
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/1/13/Voting_in_Italy_1946.jpg"
+        },
+        {
+            date: "1947-12-22",
+            title: "Approvazione della Costituzione",
+            description: "L'Assemblea Costituente approva la Costituzione che istituisce uno Stato democratico e rigido con controllo di legittimità.",
+            level: 1
+        },
+        {
+            date: "1948-01-01",
+            title: "Entrata in vigore della Costituzione",
+            description: "La Costituzione repubblicana entra in vigore: diritti fondamentali, autonomie e Corte costituzionale (operativa dal 1956).",
+            level: 1,
+            image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Italian_Constitution_1948.jpg"
+        }
     ]
 };
