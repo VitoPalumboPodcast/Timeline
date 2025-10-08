@@ -229,7 +229,31 @@ document.addEventListener('DOMContentLoaded', () => {
         data.periods.forEach((period) => {
             const el = document.createElement('div');
             el.className = 'period';
-            el.textContent = period.name;
+
+            const content = document.createElement('div');
+            content.className = 'period-content';
+
+            if (period.icon) {
+                const iconWrapper = document.createElement('div');
+                iconWrapper.className = 'period-icon-wrapper';
+
+                const icon = document.createElement('img');
+                icon.className = 'period-icon';
+                icon.src = period.icon;
+                icon.alt = period.iconAlt ?? period.name;
+                icon.loading = 'lazy';
+                icon.decoding = 'async';
+
+                iconWrapper.appendChild(icon);
+                content.appendChild(iconWrapper);
+            }
+
+            const label = document.createElement('span');
+            label.className = 'period-name';
+            label.textContent = period.name;
+            content.appendChild(label);
+
+            el.appendChild(content);
             const start = ((period.start - minYear) / totalYears) * baseWidth;
             const width = ((period.end - period.start) / totalYears) * baseWidth;
             el.style.left = `${start}px`;

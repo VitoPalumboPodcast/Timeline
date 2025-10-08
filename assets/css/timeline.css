@@ -384,6 +384,8 @@ h1 {
     transform: translateY(-50%);
     border-radius: 14px;
     padding: 8px calc(20px * var(--timeline-font-scale, 1));
+    display: inline-flex;
+    align-items: center;
     color: var(--period-text-color);
     font-weight: 600;
     font-size: calc(0.9rem * var(--timeline-font-scale, 1));
@@ -391,6 +393,39 @@ h1 {
     box-shadow: 0 10px 30px var(--period-shadow);
     transition: transform 0.2s ease, opacity 0.2s ease;
     opacity: 0.9;
+}
+
+.period-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.period-icon-wrapper {
+    flex: 0 0 auto;
+    width: calc(34px * var(--timeline-font-scale, 1));
+    height: calc(34px * var(--timeline-font-scale, 1));
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="light"] .period-icon-wrapper {
+    background: rgba(46, 64, 128, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(46, 64, 128, 0.18);
+}
+
+.period-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.period-name {
+    white-space: nowrap;
 }
 
 .period:hover {
