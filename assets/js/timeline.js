@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tickConfigs = [
         {
             maxZoom: 0.35,
-            step: 100,
+            step: 50,
             majorStep: 100,
             formatLabel: (year) => {
                 const century = Math.floor((year - 1) / 100) + 1;
@@ -152,22 +152,22 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             maxZoom: 0.55,
-            step: 50,
+            step: 25,
             majorStep: 50
         },
         {
             maxZoom: 0.9,
-            step: 20,
-            majorStep: 40
-        },
-        {
-            maxZoom: 1.5,
             step: 10,
             majorStep: 20
         },
         {
-            maxZoom: 2.3,
+            maxZoom: 1.5,
             step: 5,
+            majorStep: 10
+        },
+        {
+            maxZoom: 2.3,
+            step: 2,
             majorStep: 10
         },
         {
