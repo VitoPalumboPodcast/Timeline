@@ -55,6 +55,15 @@ window.TIMELINE_DATA = {
             iconAlt: "Agostino Depretis"
         },
         {
+            name: "Età umbertina",
+            start: 1878,
+            end: 1900,
+            color: "rgba(129,212,250,0.22)",
+            lane: 4,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/7/73/Umberto_I_di_Savoia%2C_re_d%27Italia.jpg",
+            iconAlt: "Umberto I di Savoia"
+        },
+        {
             name: "Età giolittiana",
             start: 1903,
             end: 1914,
@@ -62,6 +71,15 @@ window.TIMELINE_DATA = {
             lane: 3,
             icon: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Giovanni_Giolitti_1920.jpg",
             iconAlt: "Giovanni Giolitti"
+        },
+        {
+            name: "Grande Guerra e dopoguerra",
+            start: 1914,
+            end: 1922,
+            color: "rgba(255,214,126,0.28)",
+            lane: 4,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/IWM-Q-70217-Italian_troops_WWI.jpg",
+            iconAlt: "Truppe italiane durante la Prima guerra mondiale"
         },
         {
             name: "Crisi liberale e riforme",
