@@ -7,7 +7,8 @@ window.TIMELINE_DATA = {
             color: "rgba(121,134,203,0.45)",
             lane: 2,
             icon: "https://upload.wikimedia.org/wikipedia/commons/9/96/Imperial_Coat_of_Arms_of_the_Empire_of_Austria_%281815%29.svg",
-            iconAlt: "Stemma imperiale austriaco del Congresso di Vienna"
+            iconAlt: "Stemma imperiale austriaco del Congresso di Vienna",
+            description: "Dopo il Congresso di Vienna gli antichi Stati ripristinano apparati e codici pre-napoleonici, reprimendo i tentativi di riforma costituzionale."
         },
         {
             name: "Moti rivoluzionari e fermento costituzionale",
@@ -16,7 +17,8 @@ window.TIMELINE_DATA = {
             color: "rgba(121,134,203,0.32)",
             lane: 5,
             icon: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Indipendenza_italiana_1848.jpg",
-            iconAlt: "Scene delle Cinque Giornate di Milano"
+            iconAlt: "Scene delle Cinque Giornate di Milano",
+            description: "Insurrezioni carbonare e rivoluzioni liberali chiedono costituzioni e diritti politici in tutta la penisola, preparando il terreno al 1848."
         },
         {
             name: "Carte costituzionali del 1848",
@@ -25,7 +27,8 @@ window.TIMELINE_DATA = {
             color: "rgba(244,143,177,0.45)",
             lane: 0,
             icon: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Frontespizio_Statuto_Albertino.jpg",
-            iconAlt: "Frontespizio dello Statuto Albertino"
+            iconAlt: "Frontespizio dello Statuto Albertino",
+            description: "Il biennio rivoluzionario costringe diversi sovrani a promulgare carte che istituiscono parlamenti e diritti, presto però sospese dalla reazione."
         },
         {
             name: "Risorgimento e unificazione politica",
@@ -34,7 +37,8 @@ window.TIMELINE_DATA = {
             color: "rgba(244,143,177,0.32)",
             lane: 1,
             icon: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Garibaldi_%281866%29.svg",
-            iconAlt: "Giuseppe Garibaldi"
+            iconAlt: "Giuseppe Garibaldi",
+            description: "Guerre d'indipendenza, diplomazia sabauda e spedizioni garibaldine conducono all'unificazione della penisola sotto la monarchia sabauda."
         },
         {
             name: "Unificazione amministrativa e codici",
@@ -43,7 +47,8 @@ window.TIMELINE_DATA = {
             color: "rgba(129,212,250,0.45)",
             lane: 3,
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Italy_%281861-1946%29_crowned.svg",
-            iconAlt: "Bandiera del Regno d'Italia"
+            iconAlt: "Bandiera del Regno d'Italia",
+            description: "Il nuovo Stato unitario uniforma istituzioni, burocrazia e diritto con leggi centrali e grandi codificazioni civili e penali."
         },
         {
             name: "Destra storica",
@@ -52,7 +57,8 @@ window.TIMELINE_DATA = {
             color: "rgba(129,212,250,0.32)",
             lane: 0,
             icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Camillo_benso_count_of_Cavour.jpg",
-            iconAlt: "Camillo Benso, conte di Cavour"
+            iconAlt: "Camillo Benso, conte di Cavour",
+            description: "La classe dirigente moderata consolida il Regno con centralizzazione fiscale, ordine pubblico e il perseguimento del pareggio di bilancio."
         },
         {
             name: "Sinistra storica",
@@ -61,7 +67,8 @@ window.TIMELINE_DATA = {
             color: "rgba(129,212,250,0.32)",
             lane: 1,
             icon: "https://upload.wikimedia.org/wikipedia/commons/3/30/Agostino_Depretis_%28cropped%29.jpg",
-            iconAlt: "Agostino Depretis"
+            iconAlt: "Agostino Depretis",
+            description: "I governi Depretis e Crispi ampliano l'elettorato, sperimentano il trasformismo e promuovono modernizzazione e ambizioni coloniali."
         },
         {
             name: "Età umbertina",
@@ -70,7 +77,8 @@ window.TIMELINE_DATA = {
             color: "rgba(129,212,250,0.22)",
             lane: 4,
             icon: "https://upload.wikimedia.org/wikipedia/commons/7/73/Umberto_I_di_Savoia%2C_re_d%27Italia.jpg",
-            iconAlt: "Umberto I di Savoia"
+            iconAlt: "Umberto I di Savoia",
+            description: "Il regno di Umberto I è segnato da industrializzazione, tensioni sociali e dalla stretta autoritaria dopo moti e attentati."
         },
         {
             name: "Età giolittiana",
@@ -79,7 +87,8 @@ window.TIMELINE_DATA = {
             color: "rgba(255,214,126,0.32)",
             lane: 3,
             icon: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Giovanni_Giolitti_1920.jpg",
-            iconAlt: "Giovanni Giolitti"
+            iconAlt: "Giovanni Giolitti",
+            description: "Giolitti guida riforme sociali, mediazione con i movimenti operai e sviluppo industriale all'interno dello Stato liberale."
         },
         {
             name: "Grande Guerra e dopoguerra",
@@ -88,14 +97,16 @@ window.TIMELINE_DATA = {
             color: "rgba(255,214,126,0.28)",
             lane: 4,
             icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/IWM-Q-70217-Italian_troops_WWI.jpg",
-            iconAlt: "Truppe italiane durante la Prima guerra mondiale"
+            iconAlt: "Truppe italiane durante la Prima guerra mondiale",
+            description: "La partecipazione al conflitto e la difficile riconversione alimentano debiti, rivendicazioni dei reduci e forti conflitti sociali."
         },
         {
             name: "Crisi liberale e riforme",
             start: 1912,
             end: 1919,
             color: "rgba(255,214,126,0.45)",
-            lane: 2
+            lane: 2,
+            description: "L'espansione del suffragio, gli interventi sociali e i primi strumenti di welfare cercano di rispondere alle tensioni di masse urbanizzate."
         },
         {
             name: "Regime fascista e legislazione autoritaria",
@@ -104,14 +115,16 @@ window.TIMELINE_DATA = {
             color: "rgba(255,138,128,0.45)",
             lane: 1,
             icon: "https://upload.wikimedia.org/wikipedia/commons/7/74/National_Fascist_Party_logo.svg",
-            iconAlt: "Stemma del Partito Nazionale Fascista"
+            iconAlt: "Stemma del Partito Nazionale Fascista",
+            description: "Le leggi fascistissime smantellano libertà parlamentari e pluralismo, imponendo il partito unico e il controllo capillare della società."
         },
         {
             name: "Transizione alla democrazia",
             start: 1943,
             end: 1946,
             color: "rgba(186,104,200,0.45)",
-            lane: 0
+            lane: 0,
+            description: "Dal crollo del regime alla cobelligeranza, i Comitati di Liberazione e i governi di unità traghettano il Paese verso la scelta repubblicana."
         },
         {
             name: "Costruzione della Repubblica",
@@ -120,7 +133,8 @@ window.TIMELINE_DATA = {
             color: "rgba(186,104,200,0.35)",
             lane: 2,
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/00/Emblem_of_Italy.svg",
-            iconAlt: "Emblema della Repubblica Italiana"
+            iconAlt: "Emblema della Repubblica Italiana",
+            description: "L'Assemblea Costituente elabora la Costituzione repubblicana e ricostruisce istituzioni democratiche avviando la stagione delle riforme."
         }
     ],
     events: [
