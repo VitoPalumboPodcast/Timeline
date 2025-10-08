@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Spettacolare • Storia d'Italia 1848-1948</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #fff;
+            overflow: hidden; /* Evita scrollbar del body */
+            position: relative;
+            height: 100vh;
+        }
+
+        /* Sfondo animato */
+        .bg-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            will-change: transform, opacity; /* Ottimizzazione performance */
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            33% { transform: translate(30px, -50px) scale(1.1); opacity: 0.5; }
+            66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.2; }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.9); /* Leggermente più trasparente */
+            backdrop-filter: blur(15px); /* Blur più intenso */
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 1000;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.4); /* Ombra più contenuta */
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .zoom-controls {
+            display: flex;
+            background: rgba(255,255,255,0.08); /* Sfondo più scuro */
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .zoom-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(255,255,255,0.15); /* Hover più delicato */
+        }
+
+        .zoom-level {
+            padding: 10px 15px;
+            min-width: 70px; /* Larghezza aumentata per percentuale */
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            position: absolute;
+            top: 90px; /* Sotto l'header */
+            left: 0;
+            right: 0;
+            bottom: 100px; /* Sopra la minimappa */
+            overflow: hidden;
+            cursor: grab;
+            z-index: 1;
+        }
+
+        .timeline-container.grabbing {
+            cursor: grabbing;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            height: 100%;
+            transition: transform 0.1s linear; /* Transizione più rapida per lo spostamento */
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        /* Main Timeline */
+        .timeline-main {
+            position: absolute;
+            top: 50%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(102, 126, 234, 0.8) 10%, 
+                rgba(244, 114, 182, 0.8) 90%, 
+                transparent 100%);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+            transform: translateY(-50%);
+        }
+
+        /* Ticks per gli anni */
+        .timeline-tick {
+            position: absolute;
+            top: 50%;
+            width: 2px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-50%);
+        }
+
+        .timeline-tick.major {
+            height: 20px;
+            background: rgba(255,255,255,0.6);
+        }
+
+        .timeline-tick-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            white-space: nowrap;
+        }
+
+        /* Periodi */
+        .period {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 8px; /* Bordi più smussati */
+            transition: all 0.2s ease-out; /* Transizione più fluida */
+            cursor: pointer;
+            opacity: 0.9;
+            z-index: 5;
+            display: flex; /* Centra il testo */
+            align-items: center; /* Centra il testo */
+            justify-content: center; /* Centra il testo */
+            padding: 0 10px;
+        }
+
+        .period:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.02); /* Effetto leggermente più sottile */
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .period-label {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        /* Eventi */
+        .event {
+            position: absolute;
+            top: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            transition: transform 0.2s ease-out; /* Transizione per marker */
+            z-index: 2; /* Sotto i periodi di default */
+            will-change: transform, opacity;
+        }
+
+        .event:hover {
+            z-index: 100; /* Porta in primo piano al hover */
+        }
+
+        .event-marker {
+            width: 14px; /* Dimensione marker */
+            height: 14px; /* Dimensione marker */
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255,255,255,0.6);
+            transition: all 0.2s ease-out;
+            transform: translateY(-50%);
+        }
+
+        .event-marker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25px; /* Dimensione anello pulsante */
+            height: 25px; /* Dimensione anello pulsante */
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1); /* Curva più naturale */
+            opacity: 0; /* Inizia invisibile */
+        }
+        
+        /* Modifica animazione pulse per renderla più sottile e delicata */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+
+        .event:hover .event-marker {
+            transform: translateY(-50%) scale(1.4); /* Ingrandimento al hover */
+            box-shadow: 0 0 25px rgba(255,255,255,1);
+        }
+
+        .event-content {
+            position: absolute;
+            bottom: calc(100% + 15px); /* Sopra il marker */
+            left: 50%;
+            transform: translateX(-50%) translateY(10px) scale(0.8); /* Inizia leggermente sotto e più piccolo */
+            transform-origin: bottom center;
+            background: rgba(10, 14, 39, 0.98); /* Sfondo scuro e quasi opaco */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px; /* Bordi più morbidi */
+            padding: 18px;
+            min-width: 280px;
+            max-width: 380px;
+            opacity: 0;
+            transition: all 0.3s ease-out; /* Transizione più complessa */
+            pointer-events: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .event:hover .event-content {
+            transform: translateX(-50%) translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .event-date {
+            color: #f093fb; /* Colore più vibrante */
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .event-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            color: #e0e0e0;
+        }
+
+        .event-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 160px; /* Altezza immagine */
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Livelli di dettaglio */
+        .event.detail-level-1 { opacity: 1; }
+        .event.detail-level-2 { opacity: 0; transform: translateX(-50%) scale(0.8); pointer-events: none; }
+        .event.detail-level-3 { opacity: 0; transform: translateX(-50%) scale(0.6); pointer-events: none; }
+        
+        /* Animazione e visibilità dinamica */
+        .timeline-wrapper.zoom-low .event.detail-level-1 { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; }
+        .timeline-wrapper.zoom-low .event.detail-level-2,
+        .timeline-wrapper.zoom-low .event.detail-level-3 { opacity: 0; transform: translateX(-50%) scale(0.8); pointer-events: none; }
+
+        .timeline-wrapper.zoom-medium .event.detail-level-1,
+        .timeline-wrapper.zoom-medium .event.detail-level-2 { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; }
+        .timeline-wrapper.zoom-medium .event.detail-level-3 { opacity: 0; transform: translateX(-50%) scale(0.8); pointer-events: none; }
+
+        .timeline-wrapper.zoom-high .event.detail-level-1,
+        .timeline-wrapper.zoom-high .event.detail-level-2,
+        .timeline-wrapper.zoom-high .event.detail-level-3 { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; }
+
+
+        /* Mini-map */
+        .minimap {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 900px; /* Aumentata larghezza massima */
+            height: 70px; /* Altezza minimappa */
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 35px; /* Più arrotondata */
+            padding: 12px;
+            z-index: 1000;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+        }
+
+        .minimap-track {
+            position: relative;
+            height: 100%;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .minimap-viewport {
+            position: absolute;
+            height: 100%;
+            background: rgba(102, 126, 234, 0.4); /* Colore più delicato */
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            cursor: ew-resize;
+            transition: left 0.05s linear, width 0.05s linear; /* Transizioni più fluide */
+            will-change: left, width;
+        }
+
+        .minimap-event-marker {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 3px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .minimap-period {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60%;
+            border-radius: 5px;
+            opacity: 0.5;
+        }
+
+        /* Indicatore anno corrente */
+        .year-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 500;
+            transition: opacity 0.3s ease-out;
+            opacity: 0; /* Nascondi di default */
+        }
+
+        .year-indicator.show-year {
+            opacity: 1;
+        }
+
+        .year-display {
+            background: rgba(102, 126, 234, 0.9);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 28px; /* Dimensione anno */
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+            }
+            .title {
+                font-size: 22px;
+            }
+            .zoom-controls {
+                display: none; /* Nascondi controlli zoom manuali su mobile, usa pinch */
+            }
+            .minimap {
+                width: 90%;
+                height: 50px;
+                padding: 8px;
+            }
+            .minimap-track {
+                border-radius: 15px;
+            }
+            .minimap-viewport {
+                border-radius: 15px;
+            }
+            .timeline-container {
+                top: 70px;
+                bottom: 70px;
+            }
+            .event-content {
+                min-width: 220px;
+                max-width: 90%;
+                padding: 15px;
+                font-size: 13px;
+            }
+            .event-title {
+                font-size: 16px;
+            }
+            .event-description {
+                font-size: 13px;
+            }
+            .year-display {
+                font-size: 20px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles" id="particles"></div>
+    
+    <div class="header">
+        <h1 class="title">Storia d'Italia • 1848-1948</h1>
+        <div class="controls">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomOut()">−</button>
+                <div class="zoom-level" id="zoomLevel">100%</div>
+                <button class="zoom-btn" onclick="zoomIn()">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container" id="timelineContainer">
+        <div class="timeline-wrapper" id="timelineWrapper">
+            <div class="timeline-main" id="timelineMain"></div>
+            <div id="periodsContainer"></div>
+            <div id="eventsContainer"></div>
+        </div>
+    </div>
+
+    <div class="year-indicator" id="yearIndicator">
+        <div class="year-display" id="yearDisplay"></div>
+    </div>
+
+    <div class="minimap">
+        <div class="minimap-track" id="minimapTrack">
+            <div class="minimap-viewport" id="minimapViewport"></div>
+        </div>
+    </div>
+
+    <script>
+        // Dati timeline
+        const timelineData = {
+            startYear: 1848,
+            endYear: 1948,
+            pixelsPerYear: 30, // Pixel base per anno, modificabile con lo zoom
+            minZoom: 0.2, // Zoom minimo (molto indietro)
+            maxZoom: 5,   // Zoom massimo (molto in avanti)
+            periods: [
+                {
+                    name: "Primavera dei Popoli e Risorgimento",
+                    start: 1848,
+                    end: 1861,
+                    color: "linear-gradient(135deg, #667eea, #764ba2)",
+                    height: 50,
+                    labelColor: "white",
+                    minZoomLevel: 0.5
+                },
+                {
+                    name: "Regno d'Italia Unito",
+                    start: 1861,
+                    end: 1914,
+                    color: "linear-gradient(135deg, #f093fb, #f5576c)",
+                    height: 60,
+                    labelColor: "white",
+                    minZoomLevel: 0.2
+                },
+                {
+                    name: "Età Giolittiana",
+                    start: 1903,
+                    end: 1914,
+                    color: "linear-gradient(135deg, #FFC700, #F77700)",
+                    height: 30,
+                    labelColor: "#333",
+                    minZoomLevel: 0.8
+                },
+                {
+                    name: "Grande Guerra",
+                    start: 1915,
+                    end: 1918,
+                    color: "linear-gradient(135deg, #fa709a, #fee140)",
+                    height: 40,
+                    labelColor: "white",
+                    minZoomLevel: 0.6
+                },
+                {
+                    name: "Ventennio Fascista",
+                    start: 1922,
+                    end: 1943,
+                    color: "linear-gradient(135deg, #30cfd0, #330867)",
+                    height: 55,
+                    labelColor: "white",
+                    minZoomLevel: 0.5
+                },
+                {
+                    name: "Seconda Guerra Mondiale",
+                    start: 1940,
+                    end: 1945,
+                    color: "linear-gradient(135deg, #a8edea, #fed6e3)",
+                    height: 45,
+                    labelColor: "#333",
+                    minZoomLevel: 0.8
+                },
+                {
+                    name: "Transizione alla Repubblica",
+                    start: 1943,
+                    end: 1948,
+                    color: "linear-gradient(135deg, #00f260, #0575e6)",
+                    height: 50,
+                    labelColor: "white",
+                    minZoomLevel: 0.6
+                }
+            ],
+            events: [
+                // Livello 1: Eventi chiave (visibili a tutti i livelli di zoom)
+                {
+                    date: "1848",
+                    title: "Prima Guerra d'Indipendenza",
+                    description: "Carlo Alberto dichiara guerra all'Austria. Iniziano le Cinque Giornate di Milano.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Indipendenza_italiana_1848.jpg"
+                },
+                {
+                    date: "1861-03-17", // Data più precisa
+                    title: "Proclamazione del Regno d'Italia",
+                    description: "Vittorio Emanuele II diventa il primo re d'Italia. Torino è la prima capitale.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Proclamazione_del_Regno_d%27Italia.jpg"
+                },
+                {
+                    date: "1870-09-20",
+                    title: "Breccia di Porta Pia",
+                    description: "Roma viene conquistata e diventa capitale d'Italia. Fine del potere temporale del Papa.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Breccia_di_Porta_Pia.jpg"
+                },
+                {
+                    date: "1915-05-24",
+                    title: "Italia entra nella Grande Guerra",
+                    description: "L'Italia entra nella Prima Guerra Mondiale a fianco dell'Intesa.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/1/18/Italian_troops_advancing_during_the_Battle_of_the_Piave.jpg"
+                },
+                {
+                    date: "1922-10-28",
+                    title: "Marcia su Roma",
+                    description: "Mussolini e i fascisti marciano su Roma. Il re Vittorio Emanuele III affida a Mussolini l'incarico di formare il governo.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/9/90/Marcia_su_Roma.jpg"
+                },
+                {
+                    date: "1940-06-10",
+                    title: "Italia entra nella Seconda Guerra Mondiale",
+                    description: "Mussolini dichiara guerra a Francia e Gran Bretagna.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Italian_troops_in_North_Africa_1940.jpg"
+                },
+                {
+                    date: "1943-07-25",
+                    title: "Caduta del Fascismo",
+                    description: "Il Gran Consiglio del Fascismo vota contro Mussolini, che viene arrestato. Armistizio dell'8 settembre.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Benito_Mussolini_arrested_1943.jpg"
+                },
+                {
+                    date: "1946-06-02",
+                    title: "Nascita della Repubblica Italiana",
+                    description: "Referendum istituzionale: gli italiani scelgono la Repubblica. Le donne votano per la prima volta.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/1/13/Voting_in_Italy_1946.jpg"
+                },
+                {
+                    date: "1948-01-01",
+                    title: "Entrata in vigore della Costituzione",
+                    description: "Entra in vigore la Costituzione della Repubblica Italiana, pilastro della democrazia.",
+                    level: 1,
+                    importance: "high",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Italian_Constitution_1948.jpg"
+                },
+
+                // Livello 2: Eventi importanti (visibili a zoom medio/alto)
+                {
+                    date: "1849-02-09",
+                    title: "Repubblica Romana",
+                    description: "Mazzini, Garibaldi e Saffi guidano la Repubblica Romana, esperienza democratica di breve durata.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1859-04-26",
+                    title: "Seconda Guerra d'Indipendenza",
+                    description: "Alleanza con la Francia di Napoleone III contro l'Austria, con importanti annessioni territoriali.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1860-05-05",
+                    title: "Spedizione dei Mille",
+                    description: "Garibaldi e i suoi volontari partono da Quarto e conquistano il Regno delle Due Sicilie.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1866-06-20",
+                    title: "Terza Guerra d'Indipendenza",
+                    description: "L'Italia si allea con la Prussia e ottiene il Veneto dall'Austria.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1882-05-20",
+                    title: "Triplice Alleanza",
+                    description: "Italia, Germania e Austria-Ungheria formano un'alleanza difensiva che durerà fino alla Prima Guerra Mondiale.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1896-03-01",
+                    title: "Battaglia di Adua",
+                    description: "Disastrosa sconfitta italiana in Etiopia, che ferma l'espansione coloniale in Africa orientale.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1911-09-29",
+                    title: "Guerra di Libia",
+                    description: "L'Italia conquista la Libia e le isole del Dodecaneso dall'Impero Ottomano.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1918-11-04",
+                    title: "Vittoria nella Grande Guerra",
+                    description: "Armistizio di Villa Giusti e fine della Prima Guerra Mondiale per l'Italia.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1924-06-10",
+                    title: "Delitto Matteotti",
+                    description: "Assassinio del deputato socialista Giacomo Matteotti, evento che segna una svolta autoritaria del fascismo.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1929-02-11",
+                    title: "Patti Lateranensi",
+                    description: "Accordo tra Mussolini e Papa Pio XI. Regola i rapporti Stato-Chiesa e sancisce la nascita dello Stato della Città del Vaticano.",
+                    level: 2,
+                    importance: "medium"
+                },
+                {
+                    date: "1935
