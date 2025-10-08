@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.style.transform = `translateX(${state.translate}px)`;
         inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
-        const textScale = clamp(1 / state.zoom, 1, 2.3);
+        const textScale = clamp(1 / state.zoom, 1, 2.8);
         inner.style.setProperty('--timeline-font-scale', textScale.toFixed(3));
         inner.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
         inner.style.setProperty('--timeline-zoom-inverse', (1 / state.zoom).toFixed(3));
