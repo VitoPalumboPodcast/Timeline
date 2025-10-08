@@ -356,6 +356,15 @@ document.addEventListener('DOMContentLoaded', () => {
         zoomLevelEl.textContent = `${Math.round(state.zoom * 100)}%`;
     };
 
+    const computeTextScale = (zoom) => {
+        if (zoom >= 1) {
+            const compensated = Math.pow(zoom, -0.35);
+            return clamp(compensated, 0.85, 1);
+        }
+        const expanded = Math.pow(1 / zoom, 0.78);
+        return clamp(expanded, 1, 3.6);
+    };
+
     const updateDetailLevels = () => {
         inner.classList.remove('zoom-low', 'zoom-medium', 'zoom-high');
         if (state.zoom < 0.55) {
@@ -404,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.style.transform = `translateX(${state.translate}px)`;
         inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
-        const textScale = clamp(1 / state.zoom, 1, 2.8);
+        const textScale = computeTextScale(state.zoom);
         inner.style.setProperty('--timeline-font-scale', textScale.toFixed(3));
         inner.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
         inner.style.setProperty('--timeline-zoom-inverse', (1 / state.zoom).toFixed(3));
