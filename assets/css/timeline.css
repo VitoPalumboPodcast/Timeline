@@ -374,7 +374,7 @@ h1 {
     bottom: -46px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: clamp(0.7rem, calc(0.75rem * var(--timeline-font-scale, 1)), 1.05rem);
+    font-size: clamp(0.75rem, 0.7rem + 0.18vw, 1.05rem);
     color: var(--tick-label-color);
     white-space: nowrap;
 }
@@ -383,12 +383,12 @@ h1 {
     position: absolute;
     transform: translateY(-50%);
     border-radius: 14px;
-    padding: 8px clamp(16px, calc(20px * var(--timeline-font-scale, 1)), 28px);
+    padding: 8px clamp(16px, 18px + 0.4vw, 28px);
     display: inline-flex;
     align-items: center;
     color: var(--period-text-color);
     font-weight: 600;
-    font-size: clamp(0.85rem, calc(0.9rem * var(--timeline-font-scale, 1)), 1.2rem);
+    font-size: clamp(0.9rem, 0.85rem + 0.35vw, 1.2rem);
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px var(--period-shadow);
     transition: transform 0.2s ease, opacity 0.2s ease;
