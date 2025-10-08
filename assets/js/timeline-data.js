@@ -129,6 +129,16 @@ window.TIMELINE_DATA = {
             description: "Le leggi fascistissime smantellano libertà parlamentari e pluralismo, imponendo il partito unico e il controllo capillare della società."
         },
         {
+            name: "Seconda guerra mondiale",
+            start: 1939,
+            end: 1945,
+            color: "rgba(255,112,67,0.55)",
+            lane: 4,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/7/7e/WWII_Military_Collage.png",
+            iconAlt: "Montaggio di scene militari della Seconda guerra mondiale",
+            description: "Il conflitto globale travolge l'Italia tra campagne militari fallimentari, occupazione straniera, Resistenza e profonde lacerazioni civili."
+        },
+        {
             name: "Transizione alla democrazia",
             start: 1943,
             end: 1946,
