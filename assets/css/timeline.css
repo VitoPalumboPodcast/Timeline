@@ -373,7 +373,8 @@ h1 {
     position: absolute;
     bottom: -46px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scaleX(var(--timeline-zoom-inverse, 1));
+    transform-origin: center bottom;
     font-size: clamp(0.75rem, 0.7rem + 0.18vw, 1.05rem);
     color: var(--tick-label-color);
     white-space: nowrap;
