@@ -149,12 +149,12 @@ window.TIMELINE_DATA = {
         {
             name: "Repubblica Italiana",
             start: 1946,
-            end: 2025,
-            color: "rgba(76,175,80,0.4)",
+            end: new Date().getFullYear(),
+            color: "rgba(67,160,71,0.45)",
             lane: 3,
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/00/Emblem_of_Italy.svg",
             iconAlt: "Emblema della Repubblica Italiana",
-            description: "Dal referendum del 2 giugno 1946 la Repubblica italiana consolida le istituzioni democratiche, sviluppa il welfare e partecipa alla costruzione europea fino all'età contemporanea."
+            description: "Dal referendum istituzionale del 2 giugno 1946 prende forma la Repubblica parlamentare: la Costituzione entra in vigore nel 1948, si sviluppa un ampio welfare, si consolidano autonomie locali e magistratura, mentre l'Italia contribuisce all'integrazione europea e alla proiezione internazionale fino all'oggi."
         }
     ],
     events: [
