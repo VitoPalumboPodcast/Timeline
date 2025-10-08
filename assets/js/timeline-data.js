@@ -86,8 +86,8 @@ window.TIMELINE_DATA = {
             end: 1900,
             color: "rgba(129,212,250,0.22)",
             lane: 4,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/7/73/Umberto_I_di_Savoia%2C_re_d%27Italia.jpg",
-            iconAlt: "Umberto I di Savoia",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/5/57/Lesser_coat_of_arms_of_the_Kingdom_of_Italy_%281890%29.svg",
+            iconAlt: "Stemma minore del Regno d'Italia nel 1890",
             description: "Il regno di Umberto I è segnato da industrializzazione, tensioni sociali e dalla stretta autoritaria dopo moti e attentati."
         },
         {
