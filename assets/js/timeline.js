@@ -229,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.periods.forEach((period) => {
             const el = document.createElement('div');
             el.className = 'period';
+            el.setAttribute('tabindex', '0');
 
             const content = document.createElement('div');
             content.className = 'period-content';
@@ -254,6 +255,28 @@ document.addEventListener('DOMContentLoaded', () => {
             content.appendChild(label);
 
             el.appendChild(content);
+
+            const card = document.createElement('div');
+            card.className = 'period-card';
+
+            const range = document.createElement('div');
+            range.className = 'period-range';
+            range.textContent = `${period.start} – ${period.end}`;
+            card.appendChild(range);
+
+            const cardTitle = document.createElement('div');
+            cardTitle.className = 'period-card-title';
+            cardTitle.textContent = period.name;
+            card.appendChild(cardTitle);
+
+            if (period.description) {
+                const description = document.createElement('div');
+                description.className = 'period-card-description';
+                description.textContent = period.description;
+                card.appendChild(description);
+            }
+
+            el.appendChild(card);
             const start = ((period.start - minYear) / totalYears) * baseWidth;
             const width = ((period.end - period.start) / totalYears) * baseWidth;
             el.style.left = `${start}px`;
