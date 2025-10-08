@@ -203,7 +203,7 @@
             bottom: -46px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: calc(0.75rem * var(--tick-text-scale));
+            font-size: clamp(0.72rem, calc(0.75rem * var(--tick-text-scale)), 1.1rem);
             color: rgba(255,255,255,0.75);
             white-space: nowrap;
         }
@@ -212,10 +212,10 @@
             position: absolute;
             transform: translateY(-50%);
             border-radius: 14px;
-            padding: 8px 20px;
+            padding: clamp(6px, 0.5rem, 10px) clamp(16px, 1.25rem, 24px);
             color: #fff;
             font-weight: 700;
-            font-size: calc(1.05rem * var(--period-label-scale));
+            font-size: clamp(1rem, calc(1.05rem * var(--period-label-scale)), 2.35rem);
             letter-spacing: 0.02em;
             text-shadow: 0 6px 18px rgba(0,0,0,0.55), 0 0 12px rgba(5,7,19,0.75);
             backdrop-filter: blur(10px);
@@ -274,11 +274,11 @@
             bottom: calc(100% + 18px);
             transform: translate(-50%, calc(12px * var(--event-card-scale))) scale(0.95);
             transform-origin: bottom;
-            min-width: calc(260px * var(--event-card-scale));
-            max-width: calc(320px * var(--event-card-scale));
+            min-width: clamp(220px, calc(260px * var(--event-card-scale)), 340px);
+            max-width: clamp(280px, calc(320px * var(--event-card-scale)), 380px);
             background: rgba(8,11,36,0.95);
             border-radius: 16px;
-            padding: calc(18px * var(--event-card-scale)) calc(20px * var(--event-card-scale));
+            padding: clamp(16px, calc(18px * var(--event-card-scale)), 28px) clamp(18px, calc(20px * var(--event-card-scale)), 32px);
             border: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 24px 50px rgba(0,0,0,0.45);
             opacity: 0;
@@ -292,7 +292,7 @@
         }
 
         .event-date {
-            font-size: calc(0.75rem * var(--event-text-scale));
+            font-size: clamp(0.72rem, calc(0.75rem * var(--event-text-scale)), 1rem);
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #8d9eff;
@@ -300,21 +300,21 @@
         }
 
         .event-title {
-            font-size: calc(1.05rem * var(--event-text-scale));
+            font-size: clamp(1rem, calc(1.05rem * var(--event-text-scale)), 1.85rem);
             font-weight: 700;
             margin-bottom: 8px;
             color: #fff;
         }
 
         .event-description {
-            font-size: calc(0.92rem * var(--event-text-scale));
+            font-size: clamp(0.9rem, calc(0.92rem * var(--event-text-scale)), 1.3rem);
             line-height: 1.55;
             color: rgba(235,240,255,0.85);
         }
 
         .event-image {
             width: 100%;
-            height: calc(140px * var(--event-card-scale));
+            height: clamp(110px, calc(140px * var(--event-card-scale)), 200px);
             object-fit: cover;
             border-radius: 12px;
             margin-top: 14px;
@@ -725,10 +725,10 @@
             inner.style.transform = `scale(${state.zoom}) translateY(-50%)`;
             state.timelineWidth = scaledWidth;
             root.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
-            const periodScale = clamp(1.35 / state.zoom, 1, 2.1);
-            const eventTextScale = clamp(1.25 / state.zoom, 1, 2.2);
-            const eventCardScale = clamp(1.15 / state.zoom, 1, 1.75);
-            const tickTextScale = clamp(1.1 / state.zoom, 0.95, 2.1);
+            const periodScale = clamp(1.45 / state.zoom, 1, 2.4);
+            const eventTextScale = clamp(1.35 / state.zoom, 1, 2.4);
+            const eventCardScale = clamp(1.18 / state.zoom, 1, 1.85);
+            const tickTextScale = clamp(1.2 / state.zoom, 0.95, 2.15);
             root.style.setProperty('--period-label-scale', periodScale.toFixed(3));
             root.style.setProperty('--event-text-scale', eventTextScale.toFixed(3));
             root.style.setProperty('--event-card-scale', eventCardScale.toFixed(3));
@@ -764,10 +764,16 @@
                 spacing = 2;
             } else if (state.zoom >= 1.1) {
                 spacing = 5;
-            } else if (state.zoom >= 0.65) {
+            } else if (state.zoom >= 0.8) {
                 spacing = 10;
-            } else {
+            } else if (state.zoom >= 0.55) {
                 spacing = 20;
+            } else if (state.zoom >= 0.4) {
+                spacing = 25;
+            } else if (state.zoom >= 0.3) {
+                spacing = 50;
+            } else {
+                spacing = 100;
             }
 
             tickElements.forEach(({ year, tick, label }) => {
