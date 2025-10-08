@@ -361,8 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const compensated = Math.pow(zoom, -0.35);
             return clamp(compensated, 0.85, 1);
         }
-        const expanded = Math.pow(1 / zoom, 0.78);
-        return clamp(expanded, 1, 3.6);
+        const compensated = 1 / zoom;
+        return clamp(compensated, 1, 5);
     };
 
     const updateDetailLevels = () => {
