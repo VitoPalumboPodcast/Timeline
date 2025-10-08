@@ -37,6 +37,33 @@ window.TIMELINE_DATA = {
             iconAlt: "Bandiera del Regno d'Italia"
         },
         {
+            name: "Destra storica",
+            start: 1861,
+            end: 1876,
+            color: "rgba(129,212,250,0.32)",
+            lane: 0,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Camillo_benso_count_of_Cavour.jpg",
+            iconAlt: "Camillo Benso, conte di Cavour"
+        },
+        {
+            name: "Sinistra storica",
+            start: 1876,
+            end: 1896,
+            color: "rgba(129,212,250,0.32)",
+            lane: 1,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/3/30/Agostino_Depretis_%28cropped%29.jpg",
+            iconAlt: "Agostino Depretis"
+        },
+        {
+            name: "Età giolittiana",
+            start: 1903,
+            end: 1914,
+            color: "rgba(255,214,126,0.32)",
+            lane: 3,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Giovanni_Giolitti_1920.jpg",
+            iconAlt: "Giovanni Giolitti"
+        },
+        {
             name: "Crisi liberale e riforme",
             start: 1912,
             end: 1919,
