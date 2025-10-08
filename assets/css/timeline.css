@@ -156,6 +156,7 @@ h1 {
     transform-origin: left center;
     transform: translateY(-50%) scale(1, 1);
     will-change: transform;
+    --timeline-font-scale: 1;
 }
 
 .timeline-main {
@@ -187,7 +188,7 @@ h1 {
     bottom: -46px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.75rem;
+    font-size: calc(0.75rem * var(--timeline-font-scale, 1));
     color: rgba(255,255,255,0.75);
     white-space: nowrap;
 }
@@ -196,10 +197,10 @@ h1 {
     position: absolute;
     transform: translateY(-50%);
     border-radius: 14px;
-    padding: 8px 20px;
+    padding: 8px calc(20px * var(--timeline-font-scale, 1));
     color: #fff;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * var(--timeline-font-scale, 1));
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     transition: transform 0.2s ease, opacity 0.2s ease;
