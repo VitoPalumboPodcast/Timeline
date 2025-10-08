@@ -3,6 +3,7 @@ window.TIMELINE_DATA = {
         { name: "Età della Restaurazione", start: 1815, end: 1830, color: "rgba(121,134,203,0.45)", lane: 2 },
         { name: "Moti rivoluzionari e prime riforme", start: 1831, end: 1847, color: "rgba(121,134,203,0.45)", lane: 0 },
         { name: "Risorgimento e Unità d'Italia", start: 1848, end: 1870, color: "rgba(244,143,177,0.45)", lane: 1 },
+        { name: "Regno d'Italia", start: 1861, end: 1946, color: "rgba(244,143,177,0.32)", lane: 3 },
         { name: "Età Umbertina", start: 1878, end: 1900, color: "rgba(129,212,250,0.45)", lane: 0 },
         { name: "Età Giolittiana", start: 1903, end: 1914, color: "rgba(129,212,250,0.45)", lane: 2 },
         { name: "Grande Guerra", start: 1914, end: 1918, color: "rgba(255,214,126,0.45)", lane: 1 },

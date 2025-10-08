@@ -54,14 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
     inner.style.width = `${baseWidth}px`;
     mainLine.style.width = `${baseWidth}px`;
 
-    const laneOffsets = [-110, 90, -180];
+    const laneOffsets = [-110, 90, -180, 200];
+    const minimapLaneBase = 35;
+    const minimapLaneSpacing = 15;
     const levelOffsets = { 1: 0, 2: -110, 3: -200 };
 
     const tickElements = [];
 
     const tickConfigs = [
         {
-            maxZoom: 0.6,
+            maxZoom: 0.45,
             step: 100,
             majorStep: 100,
             formatLabel: (year) => {
@@ -76,19 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            maxZoom: 0.85,
+            maxZoom: 0.75,
             step: 50,
-            majorStep: 100
-        },
-        {
-            maxZoom: 1.4,
-            step: 10,
             majorStep: 50
         },
         {
-            maxZoom: 2.4,
+            maxZoom: 1.2,
+            step: 25,
+            majorStep: 50
+        },
+        {
+            maxZoom: 1.8,
+            step: 10,
+            majorStep: 20
+        },
+        {
+            maxZoom: 2.6,
             step: 5,
-            majorStep: 25
+            majorStep: 10
         },
         {
             maxZoom: Infinity,
@@ -164,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mini.style.background = period.color;
             mini.style.left = `${(start / baseWidth) * 100}%`;
             mini.style.width = `${(width / baseWidth) * 100}%`;
-            mini.style.top = `${50 + period.lane * 18}%`;
+            mini.style.top = `${minimapLaneBase + period.lane * minimapLaneSpacing}%`;
             minimap.appendChild(mini);
 
             const miniLabel = document.createElement('div');
@@ -254,9 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateDetailLevels = () => {
         inner.classList.remove('zoom-low', 'zoom-medium', 'zoom-high');
-        if (state.zoom < 0.7) {
+        if (state.zoom < 0.55) {
             inner.classList.add('zoom-low');
-        } else if (state.zoom < 1.6) {
+        } else if (state.zoom < 1.3) {
             inner.classList.add('zoom-medium');
         } else {
             inner.classList.add('zoom-high');
@@ -300,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.style.transform = `translateX(${state.translate}px)`;
         inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
+        const textScale = clamp(1 / state.zoom, 1, 2.3);
+        inner.style.setProperty('--timeline-font-scale', textScale.toFixed(3));
         state.timelineWidth = scaledWidth;
         updateZoomLevel();
         updateDetailLevels();
