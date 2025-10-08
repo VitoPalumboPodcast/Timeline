@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 6 4" role="img" aria-labelledby="title desc">
+  <title id="title">Bandiera del Regno d'Italia con stemma sabaudo e corona</title>
+  <desc id="desc">Tricolore verde, bianco e rosso con lo scudo di Savoia coronato al centro.</desc>
+  <rect width="6" height="4" fill="#fff"/>
+  <rect width="2" height="4" fill="#009246"/>
+  <rect x="4" width="2" height="4" fill="#ce2b37"/>
+  <g transform="translate(3 2)" aria-hidden="true">
+    <rect x="-0.65" y="-0.95" width="1.3" height="1.9" rx="0.12" fill="#a7001e" stroke="#f4f4f4" stroke-width="0.05"/>
+    <path d="M -0.05 -0.95 v 1.9" stroke="#f4f4f4" stroke-width="0.22"/>
+    <path d="M -0.65 -0.07 h 1.3" stroke="#f4f4f4" stroke-width="0.22"/>
+    <path d="M -0.65 0.95 h 1.3" stroke="#f4f4f4" stroke-width="0.12"/>
+    <path d="M -0.65 -0.95 h 1.3" stroke="#f4f4f4" stroke-width="0.12"/>
+    <path d="M -0.6 -1.1 h 1.2" stroke="#c99100" stroke-width="0.14" stroke-linecap="round"/>
+    <path d="M -0.9 -1.25 h 1.8" stroke="#c99100" stroke-width="0.18" stroke-linecap="round"/>
+    <path d="M -0.75 -1.35 c 0.05 -0.35 0.35 -0.6 0.75 -0.6 s 0.7 0.25 0.75 0.6" fill="none" stroke="#c99100" stroke-width="0.18"/>
+    <circle cy="-1.6" r="0.08" fill="#c99100"/>
+    <circle cx="-0.4" cy="-1.45" r="0.06" fill="#c99100"/>
+    <circle cx="0.4" cy="-1.45" r="0.06" fill="#c99100"/>
+  </g>
+</svg>
