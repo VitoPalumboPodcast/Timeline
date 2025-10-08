@@ -374,7 +374,7 @@ h1 {
     bottom: -46px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: calc(0.75rem * var(--timeline-font-scale, 1));
+    font-size: clamp(0.7rem, calc(0.75rem * var(--timeline-font-scale, 1)), 1.05rem);
     color: var(--tick-label-color);
     white-space: nowrap;
 }
@@ -383,12 +383,12 @@ h1 {
     position: absolute;
     transform: translateY(-50%);
     border-radius: 14px;
-    padding: 8px calc(20px * var(--timeline-font-scale, 1));
+    padding: 8px clamp(16px, calc(20px * var(--timeline-font-scale, 1)), 28px);
     display: inline-flex;
     align-items: center;
     color: var(--period-text-color);
     font-weight: 600;
-    font-size: calc(0.9rem * var(--timeline-font-scale, 1));
+    font-size: clamp(0.85rem, calc(0.9rem * var(--timeline-font-scale, 1)), 1.2rem);
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px var(--period-shadow);
     transition: transform 0.2s ease, opacity 0.2s ease;
@@ -398,19 +398,21 @@ h1 {
 .period-content {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: clamp(8px, calc(10px * var(--timeline-font-scale, 1)), 16px);
 }
 
 .period-icon-wrapper {
     flex: 0 0 auto;
-    width: calc(34px * var(--timeline-font-scale, 1));
-    height: calc(34px * var(--timeline-font-scale, 1));
+    width: 34px;
+    height: 34px;
     display: grid;
     place-items: center;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    transform: scaleX(var(--timeline-zoom-inverse, 1));
+    transform-origin: center;
 }
 
 :root[data-theme="light"] .period-icon-wrapper {
@@ -499,7 +501,7 @@ h1 {
 }
 
 .event-date {
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, calc(0.75rem * var(--timeline-font-scale, 1)), 0.95rem);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent-primary);
@@ -507,14 +509,14 @@ h1 {
 }
 
 .event-title {
-    font-size: 1.05rem;
+    font-size: clamp(1rem, calc(1.05rem * var(--timeline-font-scale, 1)), 1.4rem);
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--event-card-title);
 }
 
 .event-description {
-    font-size: 0.9rem;
+    font-size: clamp(0.85rem, calc(0.9rem * var(--timeline-font-scale, 1)), 1.15rem);
     line-height: 1.55;
     color: var(--event-card-description);
 }
