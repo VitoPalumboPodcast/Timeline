@@ -46,7 +46,7 @@ window.TIMELINE_DATA = {
             end: 1890,
             color: "rgba(129,212,250,0.45)",
             lane: 3,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Italy_%281861-1946%29_crowned.svg",
+            icon: "assets/img/flag_regno_italia.svg",
             iconAlt: "Bandiera del Regno d'Italia",
             description: "Il nuovo Stato unitario uniforma istituzioni, burocrazia e diritto con leggi centrali e grandi codificazioni civili e penali."
         },
