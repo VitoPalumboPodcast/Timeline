@@ -154,7 +154,7 @@ h1 {
     top: 50%;
     left: 0;
     transform-origin: left center;
-    transform: scale(1);
+    transform: translateY(-50%) scale(1, 1);
     will-change: transform;
 }
 
@@ -324,13 +324,13 @@ h1 {
     left: 50%;
     transform: translateX(-50%);
     width: min(90vw, 960px);
-    height: 84px;
+    height: 104px;
     border-radius: 32px;
     background: rgba(8,11,36,0.82);
     border: 1px solid rgba(255,255,255,0.08);
-    padding: 16px 24px;
+    padding: 16px 24px 24px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     z-index: 3;
     box-shadow: 0 24px 60px rgba(0,0,0,0.45);
 }
@@ -361,6 +361,25 @@ h1 {
     border-radius: 12px;
     transform: translateY(-50%);
     opacity: 0.55;
+    z-index: 1;
+}
+
+.minimap-period-label {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    padding-left: 8px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.78);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 10px rgba(5,7,19,0.6);
+    z-index: 2;
 }
 
 .minimap-viewport {
