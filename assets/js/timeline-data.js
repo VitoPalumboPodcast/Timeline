@@ -86,8 +86,8 @@ window.TIMELINE_DATA = {
             end: 1900,
             color: "rgba(129,212,250,0.22)",
             lane: 4,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/5/57/Lesser_coat_of_arms_of_the_Kingdom_of_Italy_%281890%29.svg",
-            iconAlt: "Stemma minore del Regno d'Italia nel 1890",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Coat_of_Arms_of_Victor_Emmanuel_II_and_Umberto_I_of_Italy_%28Order_of_the_Golden_Fleece%29.svg",
+            iconAlt: "Stemma di Vittorio Emanuele II e Umberto I con il Toson d'Oro",
             description: "Il regno di Umberto I è segnato da industrializzazione, tensioni sociali e dalla stretta autoritaria dopo moti e attentati."
         },
         {
