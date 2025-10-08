@@ -1,15 +1,31 @@
 window.TIMELINE_DATA = {
     periods: [
-        { name: "Età della Restaurazione", start: 1815, end: 1830, color: "rgba(121,134,203,0.45)", lane: 2 },
-        { name: "Moti rivoluzionari e prime riforme", start: 1831, end: 1847, color: "rgba(121,134,203,0.45)", lane: 0 },
+        {
+            name: "Età della Restaurazione",
+            start: 1815,
+            end: 1830,
+            color: "rgba(121,134,203,0.45)",
+            lane: 2,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/9/96/Imperial_Coat_of_Arms_of_the_Empire_of_Austria_%281815%29.svg",
+            iconAlt: "Stemma imperiale austriaco del Congresso di Vienna"
+        },
+        {
+            name: "Moti rivoluzionari e prime riforme",
+            start: 1831,
+            end: 1847,
+            color: "rgba(121,134,203,0.45)",
+            lane: 0,
+            icon: "https://s3.eu-central-1.wasabisys.com/evulpo-drive-mirror/it_IT/summary_assets/summary_asset_1670344196.svg",
+            iconAlt: "Giuseppe Mazzini"
+        },
         {
             name: "Risorgimento e Unità d'Italia",
             start: 1848,
             end: 1870,
             color: "rgba(244,143,177,0.45)",
             lane: 1,
-            icon: "https://s3.eu-central-1.wasabisys.com/evulpo-drive-mirror/it_IT/summary_assets/summary_asset_1670344196.svg",
-            iconAlt: "Giuseppe Mazzini"
+            icon: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Garibaldi_%281866%29.svg",
+            iconAlt: "Giuseppe Garibaldi"
         },
         {
             name: "Regno d'Italia",
@@ -20,8 +36,16 @@ window.TIMELINE_DATA = {
             icon: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Italy_%281861-1946%29_crowned.svg",
             iconAlt: "Bandiera del Regno d'Italia"
         },
-        { name: "Età Umbertina", start: 1878, end: 1900, color: "rgba(129,212,250,0.45)", lane: 0 },
-        { name: "Età Giolittiana", start: 1903, end: 1914, color: "rgba(129,212,250,0.45)", lane: 2 },
+        {
+            name: "Età Umbertina",
+            start: 1878,
+            end: 1900,
+            color: "rgba(129,212,250,0.45)",
+            lane: 0,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Lesser_coat_of_arms_of_the_Kingdom_of_Italy_%281890%29.svg",
+            iconAlt: "Stemma minore del Regno d'Italia nell'età umbertina"
+        },
+        { name: "Età Giolittiana", start: 1901, end: 1914, color: "rgba(129,212,250,0.45)", lane: 2 },
         { name: "Grande Guerra", start: 1914, end: 1918, color: "rgba(255,214,126,0.45)", lane: 1 },
         { name: "Dopoguerra e crisi", start: 1919, end: 1922, color: "rgba(255,214,126,0.45)", lane: 0 },
         {
@@ -46,7 +70,13 @@ window.TIMELINE_DATA = {
         }
     ],
     events: [
-        { date: "1815-06-09", title: "Congresso di Vienna", description: "Ridisegna la mappa d'Italia ed Europa restaurando le monarchie assolute.", level: 2 },
+        {
+            date: "1815-06-09",
+            title: "Congresso di Vienna",
+            description: "Ridisegna la mappa d'Italia ed Europa restaurando le monarchie assolute.",
+            level: 2,
+            image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Imperial_Coat_of_Arms_of_the_Empire_of_Austria_%281815%29.svg"
+        },
         { date: "1820-07-02", title: "Moti del 1820-1821", description: "Carbonari e liberali insorgono nel Regno delle Due Sicilie e nel Regno di Sardegna.", level: 3 },
         { date: "1831-02-04", title: "Moti del 1831", description: "Nuove insurrezioni nell'Italia centrale e nascita della Giovine Italia di Mazzini.", level: 2 },
         { date: "1848-03-18", title: "Cinque Giornate di Milano", description: "L'insurrezione milanese contro il dominio austriaco apre la stagione rivoluzionaria.", level: 1 },
@@ -54,10 +84,28 @@ window.TIMELINE_DATA = {
         { date: "1859-04-26", title: "Seconda guerra d'indipendenza", description: "Il Regno di Sardegna, alleato con la Francia, affronta l'Austria.", level: 1 },
         { date: "1860-05-05", title: "Spedizione dei Mille", description: "Garibaldi e i volontari partono da Quarto conquistando il Regno delle Due Sicilie.", level: 1, image: "https://upload.wikimedia.org/wikipedia/commons/d/d8/Garibaldi_and_his_volunteers_in_Sicily_1860.jpg" },
         { date: "1861-03-17", title: "Proclamazione del Regno d'Italia", description: "Vittorio Emanuele II diventa il primo re d'Italia.", level: 1 },
+        {
+            date: "1861-06-01",
+            title: "Destra storica al governo",
+            description: "La Destra storica guida l'unificazione politica puntando su liberalismo, centralismo amministrativo e libero scambio.",
+            level: 3,
+            image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Antorcha.svg"
+        },
         { date: "1870-09-20", title: "Breccia di Porta Pia", description: "L'esercito italiano entra a Roma ponendo fine al potere temporale del Papa.", level: 1 },
-        { date: "1876-03-25", title: "Governo della Sinistra storica", description: "Agostino Depretis inaugura il trasformismo e una stagione di riforme.", level: 2 },
+        {
+            date: "1876-03-25",
+            title: "Governo della Sinistra storica",
+            description: "Agostino Depretis inaugura il trasformismo con protezionismo economico, riforme sociali e politiche coloniali.",
+            level: 2
+        },
         { date: "1882-05-20", title: "Triplice Alleanza", description: "Italia, Germania e Austria-Ungheria firmano un'alleanza difensiva.", level: 2 },
         { date: "1896-03-01", title: "Battaglia di Adua", description: "Grave sconfitta italiana in Etiopia che scuote il colonialismo crispino.", level: 2 },
+        {
+            date: "1901-02-15",
+            title: "Inizio della fase giolittiana",
+            description: "Giovanni Giolitti inaugura una stagione di modernizzazione, riforme sociali e sviluppo industriale.",
+            level: 3
+        },
         { date: "1911-09-29", title: "Guerra di Libia", description: "L'Italia dichiara guerra all'Impero Ottomano per Tripolitania e Cirenaica.", level: 2 },
         { date: "1914-07-28", title: "Italia neutrale", description: "Allo scoppio della Grande Guerra il governo dichiara la neutralità.", level: 3 },
         { date: "1915-05-24", title: "Intervento nella Grande Guerra", description: "L'Italia entra in guerra al fianco dell'Intesa dopo il Patto di Londra.", level: 1 },
