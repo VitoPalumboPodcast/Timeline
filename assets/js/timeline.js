@@ -114,12 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return y + (m - 1) / 12 + (d - 1) / 365;
     };
 
+    const TIMELINE_MIN_YEAR = 1800;
+    const TIMELINE_MAX_YEAR = 2025;
+
     const allDates = [
         ...data.periods.flatMap((period) => [period.start, period.end]),
         ...data.events.map((event) => parseDate(event.date))
     ];
-    const minYear = Math.floor(Math.min(...allDates));
-    const maxYear = Math.ceil(Math.max(...allDates));
+    const computedMinYear = Math.floor(Math.min(...allDates));
+    const computedMaxYear = Math.ceil(Math.max(...allDates));
+    const minYear = Math.min(computedMinYear, TIMELINE_MIN_YEAR);
+    const maxYear = Math.max(computedMaxYear, TIMELINE_MAX_YEAR);
     const totalYears = maxYear - minYear;
     const basePixelsPerYear = 110;
     const baseWidth = totalYears * basePixelsPerYear;
