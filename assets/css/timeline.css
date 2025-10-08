@@ -502,6 +502,7 @@ h1 {
     cursor: pointer;
     transition: transform 0.2s ease;
     z-index: 2;
+    --event-card-offset: 0px;
 }
 
 .event-marker {
@@ -538,7 +539,7 @@ h1 {
 .event-card {
     position: absolute;
     left: 50%;
-    bottom: calc(100% + 18px);
+    bottom: calc(100% + 18px + var(--event-card-offset, 0px));
     transform: translate(-50%, 12px) scaleX(var(--timeline-zoom-inverse, 1));
     transform-origin: bottom;
     min-width: 260px;

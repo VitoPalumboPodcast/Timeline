@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const laneOffsets = [-110, 90, -180, 200];
     const minimapLaneBase = 35;
     const minimapLaneSpacing = 15;
-    const levelOffsets = { 1: 0, 2: -110, 3: -200 };
+    const levelCardOffsets = { 1: 0, 2: 110, 3: 200 };
 
     const tickElements = [];
 
@@ -316,8 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
             el.dataset.level = event.level;
             const position = ((parseDate(event.date) - minYear) / totalYears) * baseWidth;
             el.style.left = `${position}px`;
-            const levelOffset = levelOffsets[event.level] ?? 0;
-            el.style.top = `calc(50% + ${levelOffset}px)`;
+            el.style.top = '50%';
+            const cardOffset = levelCardOffsets[event.level] ?? 0;
+            el.style.setProperty('--event-card-offset', `${cardOffset}px`);
 
             const marker = document.createElement('div');
             marker.className = 'event-marker';
