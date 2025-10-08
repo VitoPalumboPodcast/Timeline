@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tickConfigs = [
         {
-            maxZoom: 0.45,
+            maxZoom: 0.4,
             step: 100,
             majorStep: 100,
             formatLabel: (year) => {
@@ -151,22 +151,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            maxZoom: 0.75,
+            maxZoom: 0.65,
             step: 50,
             majorStep: 50
         },
         {
-            maxZoom: 1.2,
+            maxZoom: 1,
             step: 25,
             majorStep: 50
         },
         {
-            maxZoom: 1.8,
+            maxZoom: 1.6,
             step: 10,
             majorStep: 20
         },
         {
-            maxZoom: 2.6,
+            maxZoom: 2.4,
             step: 5,
             majorStep: 10
         },
@@ -382,6 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
         inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
         const textScale = clamp(1 / state.zoom, 1, 2.3);
         inner.style.setProperty('--timeline-font-scale', textScale.toFixed(3));
+        inner.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
+        inner.style.setProperty('--timeline-zoom-inverse', (1 / state.zoom).toFixed(3));
         state.timelineWidth = scaledWidth;
         updateZoomLevel();
         updateDetailLevels();
