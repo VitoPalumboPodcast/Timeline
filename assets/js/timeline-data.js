@@ -51,6 +51,16 @@ window.TIMELINE_DATA = {
             description: "Il nuovo Stato unitario uniforma istituzioni, burocrazia e diritto con leggi centrali e grandi codificazioni civili e penali."
         },
         {
+            name: "Regno d'Italia",
+            start: 1861,
+            end: 1946,
+            color: "rgba(102,187,106,0.35)",
+            lane: 6,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/8/87/Regno_d%27Italia_stemma.png",
+            iconAlt: "Stemma del Regno d'Italia",
+            description: "Monarchia costituzionale dei Savoia: dura complessivamente 85 anni, dal 17 marzo 1861 al referendum istituzionale del 2 giugno 1946."
+        },
+        {
             name: "Destra storica",
             start: 1861,
             end: 1876,
