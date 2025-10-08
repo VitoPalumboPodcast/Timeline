@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timeline — Nascita della Repubblica & Madri Costituenti</title>
+  <link href="https://unpkg.com/vis-timeline@7.7.0/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <style>
+    /* ====== PALETTE (LIGHT DEFAULT) ====== */
+    :root{
+      --bg: #f7f9fc;      /* sfondo chiaro */
+      --fg: #0b1220;      /* testo principale */
+      --muted: #5b6b7f;   /* testo secondario/assi */
+      --accent: #1e64d1;  /* blu controlli/selection */
+      --accent2: #0c8e5b; /* verde percorso */
+      --accent3: #b46a10; /* arancio diritti & società */
+      --accent4: #b32653; /* rosa memoria locale */
+      --accent5: #6b36c8; /* viola Filomena */
+      --era: rgba(30,100,209,0.08);   /* sfondi periodi */
+      --memory: rgba(179,38,83,0.12); /* memoria locale */
+      --border: #d9e1ec;
+      --chip-bg: #ffffff;
+      --chip-hover: #f3f6fb;
+      --shadow: 0 0 0 2px var(--accent);
+    }
+    /* ====== DARK THEME (TOGGLE) ====== */
+    [data-theme="dark"]{
+      --bg: #0b0f14;
+      --fg: #e9eef5;
+      --muted: #9fb3c8;
+      --accent: #5aa9e6;
+      --accent2: #7dd3a9;
+      --accent3: #f6b26b;
+      --accent4: #e66d8c;
+      --accent5: #c78ced;
+      --era: rgba(90,169,230,0.08);
+      --memory: rgba(230,109,140,0.15);
+      --border: #1b2330;
+      --chip-bg: #121922;
+      --chip-hover: #172130;
+      --shadow: 0 0 0 2px var(--accent);
+    }
+
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji"}
+    header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    h1{font-size:18px;margin:0;font-weight:700}
+    #controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .group-toggle{display:flex;gap:8px;flex-wrap:wrap}
+    .group-toggle label{display:inline-flex;align-items:center;gap:6px;background:var(--chip-bg);border:1px solid #cfd8e3;border-radius:999px;padding:6px 10px;font-size:13px;cursor:pointer;color:var(--fg)}
+    .group-toggle label:hover{background:var(--chip-hover)}
+    .wrap{height:calc(100% - 64px);display:flex;flex-direction:column}
+    #timeline{flex:1;min-height:320px}
+
+    /* vis-item theming */
+    .vis-timeline{background:var(--bg);border-color:var(--border)}
+    .vis-text{color:var(--fg)}
+    .vis-time-axis .vis-text{color:var(--muted)}
+    .vis-item{border-radius:8px;border-width:1px}
+    .vis-item.vis-selected{box-shadow:var(--shadow)}
+    .vis-item.box.percorso{background:rgba(12,142,91,.10);border-color:var(--accent2)}
+    .vis-item.range.diritti{background:rgba(180,106,16,.10);border-color:var(--accent3)}
+    .vis-item.box.diritti{background:rgba(180,106,16,.10);border-color:var(--accent3)}
+    .vis-item.box.filo{background:rgba(107,54,200,.10);border-color:var(--accent5)}
+    .vis-item.range.contesto, .vis-item.box.contesto{background:rgba(30,100,209,.10);border-color:var(--accent)}
+    .vis-item.memory{background:var(--memory);border-color:var(--accent4);border-style:dashed}
+    .vis-item.vis-background.era{background:var(--era)}
+
+    .btn{border:1px solid #cfd8e3;background:var(--chip-bg);color:var(--fg);padding:6px 10px;border-radius:8px;font-size:13px;cursor:pointer}
+    .btn:hover{background:var(--chip-hover)}
+    .sep{height:1px;background:var(--border);margin:0}
+    .hint{color:var(--muted);font-size:12px}
+
+    /* toggle tema */
+    .toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid #cfd8e3;background:var(--chip-bg);padding:6px 10px;border-radius:999px;cursor:pointer}
+    .toggle[aria-pressed="true"]{outline:2px solid var(--accent)}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Timeline • Nascita della Repubblica & Madri Costituenti</h1>
+    <div id="controls">
+      <button class="btn" id="fit" aria-label="Adatta la vista">Adatta</button>
+      <button class="btn" id="zoomIn" aria-label="Zoom avanti">+</button>
+      <button class="btn" id="zoomOut" aria-label="Zoom indietro">−</button>
+      <button class="toggle" id="themeToggle" aria-pressed="false" aria-label="Cambia tema (chiaro/scuro)">Tema: <strong>Chiaro</strong></button>
+      <span class="hint">Zoom con rotella o pinch; trascina per spostarti</span>
+      <div class="group-toggle" id="filters" role="group" aria-label="Filtri gruppi timeline">
+        <label><input type="checkbox" data-group="percorso" checked> Percorso costituzionale</label>
+        <label><input type="checkbox" data-group="diritti" checked> Diritti & società</label>
+        <label><input type="checkbox" data-group="filo" checked> Filomena Delli Castelli</label>
+        <label><input type="checkbox" data-group="contesto" checked> Contesto Europa/Italia</label>
+        <label><input type="checkbox" data-group="memory" checked> Memoria locale</label>
+        <label><input type="checkbox" data-group="era" checked> Sfondi periodi</label>
+      </div>
+    </div>
+  </header>
+  <div class="sep"></div>
+  <div class="wrap">
+    <div id="timeline"></div>
+  </div>
+
+  <script src="https://unpkg.com/vis-data@7.1.6/umd/vis-data.min.js"></script>
+  <script src="https://unpkg.com/vis-timeline@7.7.0/standalone/umd/vis-timeline-graph2d.min.js"></script>
+  <script>
+    // ====== Tema chiaro/scuro (default: chiaro) ======
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('timeline-theme');
+      if(saved === 'dark'){
+        root.setAttribute('data-theme','dark');
+        btn.setAttribute('aria-pressed','true');
+        btn.innerHTML = 'Tema: <strong>Scuro</strong>';
+      }
+      btn.addEventListener('click', () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        if(dark){
+          root.setAttribute('data-theme','light');
+          btn.setAttribute('aria-pressed','false');
+          btn.innerHTML = 'Tema: <strong>Chiaro</strong>';
+          localStorage.setItem('timeline-theme','light');
+        } else {
+          root.setAttribute('data-theme','dark');
+          btn.setAttribute('aria-pressed','true');
+          btn.innerHTML = 'Tema: <strong>Scuro</strong>';
+          localStorage.setItem('timeline-theme','dark');
+        }
+      });
+    })();
+
+    // ====== Gruppi (corsie) per organizzare la timeline ======
+    const groups = new vis.DataSet([
+      { id: 'percorso', content: 'Percorso costituzionale' },
+      { id: 'diritti', content: 'Diritti & società' },
+      { id: 'filo', content: 'Filomena Delli Castelli' },
+      { id: 'contesto', content: 'Contesto Europa/Italia' },
+      { id: 'memory', content: 'Memoria locale' }
+    ]);
+
+    // ====== Elementi (eventi puntuali e periodi) ======
+    const items = new vis.DataSet([
+      // --- Contesto europeo & pre-1848 ---
+      { id: 0,  group: 'contesto', className: 'range contesto', type:'range', start: '1789-07-14', end: '1799-11-09', content: '1789–1799 • Rivoluzione francese', title: 'Ideali: libertà, uguaglianza, fraternità' },
+      { id: 1,  group: 'contesto', className: 'box contesto', type:'box', start: '1748-01-01', content: '1748 • Montesquieu, “Lo spirito delle leggi”', title: 'Separazione dei poteri (data indicativa dell’edizione)' },
+      { id: 2,  group: 'contesto', className: 'box contesto', type:'box', start: '1815-06-09', content: '1815 • Congresso di Vienna', title: 'Restaurazione: ripristino di molte monarchie pre-rivoluzionarie' },
+      { id: 3,  className: 'era vis-background era', type:'background', start: '1815-06-09', end: '1848-01-01', content: '1815–1848 • Restaurazione' },
+      { id: 4,  group: 'contesto', className: 'range contesto', type:'range', start: '1848-01-01', end: '1849-12-31', content: '1848–1849 • Rivoluzioni in Europa', title: 'Ondate rivoluzionarie e richieste di diritti/indipendenze' },
+
+      // --- Percorso costituzionale italiano ---
+      { id: 10, group: 'percorso', className: 'box percorso', type:'box', start: '1848-03-04', content: '1848 • Concessione dello Statuto Albertino', title: 'Atto del re Carlo Alberto (carta del Regno di Sardegna)' },
+      { id: 11, group: 'percorso', className: 'box percorso', type:'box', start: '1860-03-24', content: '1860 • Cessione di Savoia e Nizza', title: 'Trattato di Torino: ridefinizione dei confini' },
+      { id: 12, group: 'percorso', className: 'box percorso', type:'box', start: '1861-03-17', content: '1861 • Proclamazione del Regno d’Italia', title: 'Lo Statuto diventa carta del nuovo Stato' },
+
+      // --- Diritti politici e società (prima del 1946) ---
+      { id: 20, group: 'diritti', className: 'range diritti', type:'range', start: '1912-06-30', end: '1918-12-31', content: '1912–1918 • Verso il suffragio universale maschile', title: 'Ampliamento progressivo del corpo elettorale maschile' },
+      { id: 21, group: 'diritti', className: 'box diritti', type:'box', start: '1945-02-01', content: '1 feb 1945 • Voto alle donne (D.Lgs.Lgt. n. 23)', title: 'Estensione dell’elettorato attivo femminile' },
+      { id: 22, group: 'diritti', className: 'box diritti', type:'box', start: '1946-03-10', content: '10 mar 1946 • Elettorato passivo femminile (D.Lgs.Lgt. n. 74)', title: 'Norme per la Costituente: età 21 attivo, 25 passivo' },
+
+      // --- Periodi critici in Italia ---
+      { id: 30, className: 'era vis-background era', type:'background', start: '1922-10-31', end: '1943-07-25', content: '1922–1943 • Regime fascista' },
+      { id: 31, className: 'era vis-background era', type:'background', start: '1943-09-08', end: '1945-04-25', content: '1943–1945 • Guerra e occupazione nazifascista' },
+      { id: 32, group: 'contesto', className: 'box contesto', type:'box', start: '1945-04-25', content: '25 apr 1945 • Liberazione', title: 'Fine dell’occupazione nazifascista; avvio della ricostruzione' },
+
+      // --- 1946–1948: svolta repubblicana ---
+      { id: 40, group: 'percorso', className: 'box percorso', type:'box', start: '1946-05-09', content: '9 mag 1946 • Abdicazione di V.E. III', title: 'Vittorio Emanuele III abdica; Umberto II “re di maggio”' },
+      { id: 41, group: 'percorso', className: 'box percorso', type:'box', start: '1946-06-02', content: '2 giu 1946 • Referendum & Costituente', title: 'Referendum Monarchia/Repubblica + elezione Assemblea Costituente' },
+      { id: 42, group: 'percorso', className: 'box percorso', type:'box', start: '1947-12-22', content: '22 dic 1947 • Approvazione Costituzione', title: 'Approvazione in Assemblea Costituente' },
+      { id: 43, group: 'percorso', className: 'box percorso', type:'box', start: '1948-01-01', content: '1 gen 1948 • Entra in vigore la Costituzione', title: 'Entrata in vigore della Carta repubblicana' },
+      { id: 44, group: 'percorso', className: 'box percorso', type:'box', start: '1956-01-01', content: '1956 • Inizio attività Corte costituzionale', title: 'Prime decisioni della Consulta' },
+
+      // --- Diritti & società nel dopoguerra ---
+      { id: 50, group: 'diritti', className: 'box diritti', type:'box', start: '1963-02-09', content: '1963 • Accesso delle donne alla magistratura', title: 'L. 66/1963' },
+      { id: 51, group: 'diritti', className: 'box diritti', type:'box', start: '1964-09-15', content: '1964 • Abolito coefficiente Serpieri', title: 'Parificazione salariale in agricoltura' },
+      { id: 52, group: 'diritti', className: 'range diritti', type:'range', start: '1968-12-01', end: '1969-12-31', content: '1968–1969 • Fine dell’asimmetria sull’“adulterio”', title: 'Pronunce della Corte costituzionale' },
+      { id: 53, group: 'diritti', className: 'box diritti', type:'box', start: '1975-05-19', content: '1975 • Riforma del diritto di famiglia', title: 'Parità tra coniugi — L. 151/1975' },
+      { id: 54, group: 'diritti', className: 'box diritti', type:'box', start: '1981-08-05', content: '1981 • Abrogazione del delitto d’onore', title: 'L. 442/1981' },
+
+      // --- Filomena Delli Castelli ---
+      { id: 60, group: 'filo', className: 'box filo', type:'box', start: '1916-09-28', content: '28 set 1916 • Nasce F. Delli Castelli', title: 'Città Sant’Angelo (PE)' },
+      { id: 61, group: 'filo', className: 'box filo', type:'box', start: '1946-06-02', content: '2 giu 1946 • Eletta alla Costituente', title: 'Una delle 21 Madri Costituenti (DC)' },
+      { id: 62, group: 'filo', className: 'box filo', type:'box', start: '2003-01-01', content: '2003 • Intervista (memoria locale)', title: '125° dell’istituto: testimonianza raccolta a domicilio' },
+      { id: 63, group: 'filo', className: 'box filo', type:'box', start: '2010-12-22', content: '22 dic 2010 • Muore F. Delli Castelli', title: 'Pescara' },
+
+      // --- Memoria locale (etichette dedicate) ---
+      { id: 70, group: 'memory', className: 'box memory', type:'box', start: '1946-06-02', content: 'Città Sant’Angelo • Voto repubblicano (memoria)', title: 'Ricordo locale: esito repubblicano in controtendenza (in attesa di dati comunali ufficiali)' },
+      { id: 71, group: 'memory', className: 'box memory', type:'box', start: '1946-05-20', content: '1946 • Comizio professore monarchico (memoria)', title: 'Racconto: contestazione studentesca al comizio — clima politico dell’epoca' }
+    ]);
+
+    // ====== Filtro gruppi & sfondi periodo ======
+    const state = { percorso:true, diritti:true, filo:true, contesto:true, memory:true, era:true };
+
+    const view = new vis.DataView(items, {
+      filter: (item) => {
+        if (item.type === 'background') return state.era;
+        return !!state[item.group];
+      }
+    });
+
+    // ====== Timeline ======
+    const container = document.getElementById('timeline');
+    const options = {
+      locale: 'it',
+      stack: true,
+      verticalScroll: true,
+      zoomable: true,
+      moveable: true,
+      zoomMin: 1000 * 60 * 60 * 24,             // 1 giorno
+      zoomMax: 1000 * 60 * 60 * 24 * 365 * 500,  // ~500 anni
+      tooltip: { followMouse: true, overflowMethod: 'cap' },
+      maxHeight: '100%',
+      orientation: { axis: 'bottom' },
+      selectable: true,
+      // finestra iniziale: dal contesto rivoluzionario alla Repubblica
+      start: '1780-01-01',
+      end: '1955-01-01'
+    };
+
+    const timeline = new vis.Timeline(container, view, groups, options);
+
+    // ====== Controlli UI ======
+    document.getElementById('fit').addEventListener('click', () => timeline.fit());
+    document.getElementById('zoomIn').addEventListener('click', () => timeline.zoomIn(0.5));
+    document.getElementById('zoomOut').addEventListener('click', () => timeline.zoomOut(0.5));
+
+    document.getElementById('filters').addEventListener('change', (e) => {
+      const cb = e.target.closest('input[type="checkbox"][data-group]');
+      if (!cb) return;
+      state[cb.dataset.group] = cb.checked;
+      view.refresh();
+    });
+
+    // Adatta timeline alla selezione quando si clicca su un elemento
+    timeline.on('select', (props) => {
+      if (!props.items || !props.items.length) return;
+      const sel = items.get(props.items[0]);
+      if (!sel) return;
+      const padding = 0.15; // margine 15%
+      const start = sel.start ? new Date(sel.start) : null;
+      const end = sel.end ? new Date(sel.end) : start ? new Date(+start + 1000*60*60*24*7) : null; // 1 settimana se evento puntuale
+      if (start) {
+        const span = end ? (end - start) : 1000*60*60*24*14; // 2 settimane default
+        const pad = span * padding;
+        timeline.setWindow(new Date(start - pad), new Date((end || start) + pad), { animation: true });
+      }
+    });
+  </script>
+</body>
+</html>
