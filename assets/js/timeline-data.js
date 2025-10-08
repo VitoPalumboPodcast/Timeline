@@ -16,7 +16,7 @@ window.TIMELINE_DATA = {
             end: 1848,
             color: "rgba(121,134,203,0.32)",
             lane: 5,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Indipendenza_italiana_1848.jpg",
+            icon: "https://s3.eu-central-1.wasabisys.com/evulpo-drive-mirror/it_IT/summary_assets/summary_asset_1670344196.svg",
             iconAlt: "Scene delle Cinque Giornate di Milano",
             description: "Insurrezioni carbonare e rivoluzioni liberali chiedono costituzioni e diritti politici in tutta la penisola, preparando il terreno al 1848."
         },
