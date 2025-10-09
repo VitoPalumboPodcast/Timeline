@@ -383,43 +383,6 @@ h1 {
     background: var(--tick-major-color);
 }
 
-.timeline-tick-label {
-    position: absolute;
-    bottom: -46px;
-    left: 50%;
-    transform: translateX(-50%) scaleX(var(--timeline-zoom-inverse, 1));
-    transform-origin: center bottom;
-    font-size: clamp(0.75rem, 0.7rem + 0.18vw, 1.05rem);
-    color: var(--tick-label-color);
-    white-space: nowrap;
-    background: var(--tick-label-bg);
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--tick-label-border);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-    letter-spacing: 0.08em;
-    font-weight: 600;
-}
-
-:root[data-theme="light"] .timeline-tick-label {
-    box-shadow: 0 10px 20px rgba(92, 107, 192, 0.18);
-}
-
-.timeline-tick-label-start {
-    left: 0;
-    transform: scaleX(var(--timeline-zoom-inverse, 1));
-    transform-origin: left bottom;
-    text-align: left;
-}
-
-.timeline-tick-label-end {
-    left: auto;
-    right: 0;
-    transform: scaleX(var(--timeline-zoom-inverse, 1));
-    transform-origin: right bottom;
-    text-align: right;
-}
-
 .period {
     position: absolute;
     transform: translateY(-50%);

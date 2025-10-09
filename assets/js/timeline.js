@@ -246,21 +246,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const position = ((year - minYear) / totalYears) * baseWidth;
             tick.style.left = `${position}px`;
 
-            const label = document.createElement('div');
-            label.className = 'timeline-tick-label';
-
             if (year === minYear) {
                 tick.classList.add('timeline-tick-start');
-                label.classList.add('timeline-tick-label-start');
             } else if (year === maxYear) {
                 tick.classList.add('timeline-tick-end');
-                label.classList.add('timeline-tick-label-end');
             }
 
-            tick.appendChild(label);
             inner.appendChild(tick);
 
-            tickElements.push({ tick, label, year });
+            tickElements.push({ tick, year });
         }
     };
 
@@ -270,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = tickConfigs.find((entry) => state.zoom < entry.maxZoom) || tickConfigs[tickConfigs.length - 1];
         const anchor = Math.ceil(minYear / config.step) * config.step;
 
-        tickElements.forEach(({ tick, label, year }) => {
+        tickElements.forEach(({ tick, year }) => {
             const isFirstYear = year === minYear;
             const isLastYear = year === maxYear;
             const isAligned = year >= anchor && ((year - anchor) % config.step === 0);
@@ -284,10 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const majorStep = config.majorStep ?? config.step;
             const isMajor = year % majorStep === 0;
             tick.classList.toggle('major', isMajor);
-            const formatter = (isFirstYear || isLastYear)
-                ? ((value) => value)
-                : (config.formatLabel ?? ((value) => value));
-            label.textContent = `${formatter(year)}`;
         });
     };
 
