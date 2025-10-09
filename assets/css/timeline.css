@@ -387,6 +387,21 @@ h1 {
     white-space: nowrap;
 }
 
+.timeline-tick-label-start {
+    left: 0;
+    transform: scaleX(var(--timeline-zoom-inverse, 1));
+    transform-origin: left bottom;
+    text-align: left;
+}
+
+.timeline-tick-label-end {
+    left: auto;
+    right: 0;
+    transform: scaleX(var(--timeline-zoom-inverse, 1));
+    transform-origin: right bottom;
+    text-align: right;
+}
+
 .period {
     position: absolute;
     transform: translateY(-50%);

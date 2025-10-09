@@ -238,6 +238,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const label = document.createElement('div');
             label.className = 'timeline-tick-label';
+
+            if (year === minYear) {
+                tick.classList.add('timeline-tick-start');
+                label.classList.add('timeline-tick-label-start');
+            } else if (year === maxYear) {
+                tick.classList.add('timeline-tick-end');
+                label.classList.add('timeline-tick-label-end');
+            }
+
             tick.appendChild(label);
             inner.appendChild(tick);
 
