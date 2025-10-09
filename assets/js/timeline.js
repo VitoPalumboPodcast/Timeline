@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             maxZoom: Infinity,
             step: 1,
-            majorStep: 2
+            majorStep: 4
         }
     ];
 
@@ -408,8 +408,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const marker = document.createElement('button');
                 marker.type = 'button';
                 marker.className = `period-year-marker period-year-marker--${variant}`;
-                marker.setAttribute('aria-label', `${variant === 'start' ? 'Inizio' : 'Fine'} di ${period.name}: ${year}`);
-                marker.title = `${variant === 'start' ? 'Inizio' : 'Fine'} · ${year}`;
+                const isStart = variant === 'start';
+                marker.setAttribute('aria-label', `${isStart ? 'Inizio' : 'Fine'} di ${period.name}: ${year}`);
+                marker.title = `${isStart ? 'Inizio' : 'Fine'} · ${year}`;
                 const position = ((year - minYear) / totalYears) * baseWidth;
                 marker.style.left = `${position}px`;
                 marker.dataset.year = String(year);
@@ -438,6 +439,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             el.addEventListener('pointerdown', (event) => {
                 event.stopPropagation();
+            });
+
+            el.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (activePeriodElement === el) {
+                    closeActivePeriodCard();
+                } else {
+                    openPeriodCard(el);
+                }
+            });
+
+            el.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    if (activePeriodElement === el) {
+                        closeActivePeriodCard();
+                    } else {
+                        openPeriodCard(el);
+                    }
+                }
             });
 
             el.addEventListener('focusout', (event) => {
