@@ -15,7 +15,9 @@
     --timeline-line-glow: rgba(120, 140, 255, 0.5);
     --tick-color: rgba(255, 255, 255, 0.3);
     --tick-major-color: rgba(255, 255, 255, 0.6);
-    --tick-label-color: rgba(255, 255, 255, 0.75);
+    --tick-label-color: rgba(255, 255, 255, 0.92);
+    --tick-label-bg: rgba(5, 7, 25, 0.85);
+    --tick-label-border: rgba(141, 158, 255, 0.3);
     --period-text-color: #ffffff;
     --period-shadow: rgba(0, 0, 0, 0.35);
     --period-start-bg: rgba(8, 11, 36, 0.45);
@@ -64,7 +66,9 @@
     --timeline-line-glow: rgba(121, 134, 203, 0.35);
     --tick-color: rgba(26, 27, 46, 0.15);
     --tick-major-color: rgba(26, 27, 46, 0.3);
-    --tick-label-color: rgba(26, 27, 46, 0.7);
+    --tick-label-color: rgba(26, 27, 46, 0.85);
+    --tick-label-bg: rgba(255, 255, 255, 0.92);
+    --tick-label-border: rgba(92, 107, 192, 0.35);
     --period-text-color: #1a1b2e;
     --period-shadow: rgba(122, 130, 180, 0.25);
     --period-start-bg: rgba(92, 107, 192, 0.18);
@@ -362,6 +366,8 @@ h1 {
     border-radius: 999px;
     background: var(--timeline-line-gradient);
     box-shadow: 0 0 24px var(--timeline-line-glow);
+    outline: 1px solid rgba(255, 255, 255, 0.1);
+    outline-offset: -1px;
 }
 
 .timeline-tick {
@@ -386,6 +392,17 @@ h1 {
     font-size: clamp(0.75rem, 0.7rem + 0.18vw, 1.05rem);
     color: var(--tick-label-color);
     white-space: nowrap;
+    background: var(--tick-label-bg);
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--tick-label-border);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+
+:root[data-theme="light"] .timeline-tick-label {
+    box-shadow: 0 10px 20px rgba(92, 107, 192, 0.18);
 }
 
 .timeline-tick-label-start {
@@ -585,14 +602,21 @@ h1 {
 }
 
 .event-marker {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: var(--event-marker-gradient);
-    box-shadow: 0 0 16px var(--event-marker-glow);
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, rgba(197, 202, 233, 0.95) 45%, rgba(141, 158, 255, 0.9) 100%);
+    box-shadow: 0 0 18px var(--event-marker-glow), 0 0 0 2px rgba(8, 11, 36, 0.65);
     position: relative;
     transform: scaleX(var(--timeline-zoom-inverse, 1));
     transform-origin: center;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme="light"] .event-marker {
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, rgba(187, 199, 255, 0.95) 45%, rgba(92, 107, 192, 0.9) 100%);
+    box-shadow: 0 0 18px var(--event-marker-glow), 0 0 0 2px rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.85);
 }
 
 .event-marker::before {
