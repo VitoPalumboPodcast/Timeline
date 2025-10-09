@@ -271,6 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const content = document.createElement('div');
             content.className = 'period-content';
 
+            const startYear = document.createElement('span');
+            startYear.className = 'period-start-year';
+            startYear.textContent = `${period.start}`;
+
+            const main = document.createElement('div');
+            main.className = 'period-main';
+
             if (period.icon) {
                 const iconWrapper = document.createElement('div');
                 iconWrapper.className = 'period-icon-wrapper';
@@ -283,18 +290,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.decoding = 'async';
 
                 iconWrapper.appendChild(icon);
-                content.appendChild(iconWrapper);
+                main.appendChild(iconWrapper);
             }
-
-            const startYear = document.createElement('span');
-            startYear.className = 'period-start-year';
-            startYear.textContent = `${period.start}`;
-            content.appendChild(startYear);
 
             const label = document.createElement('span');
             label.className = 'period-name';
             label.textContent = period.name;
-            content.appendChild(label);
+            main.appendChild(label);
+
+            const endYear = document.createElement('span');
+            endYear.className = 'period-end-year';
+            endYear.textContent = `${period.end}`;
+
+            content.appendChild(startYear);
+            content.appendChild(main);
+            content.appendChild(endYear);
 
             el.appendChild(content);
 
