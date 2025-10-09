@@ -13,7 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
         isPointerDown: false,
         pointerStartX: 0,
         translateStart: 0,
-        timelineWidth: 0
+        timelineWidth: 0,
+        activePointers: new Map(),
+        isPinchZooming: false,
+        pinchStartDistance: 0,
+        pinchStartZoom: 1,
+        pinchCenterStart: 0,
+        pinchTranslateStart: 0
     };
 
     const shell = document.querySelector('.timeline-shell');
@@ -562,25 +568,130 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: false });
 
+    const addActivePointer = (event) => {
+        state.activePointers.set(event.pointerId, {
+            x: event.clientX,
+            y: event.clientY
+        });
+    };
+
+    const updateActivePointer = (event) => {
+        const pointer = state.activePointers.get(event.pointerId);
+        if (pointer) {
+            pointer.x = event.clientX;
+            pointer.y = event.clientY;
+        }
+    };
+
+    const removeActivePointer = (event) => {
+        state.activePointers.delete(event.pointerId);
+    };
+
+    const getPointerPair = () => {
+        const iterator = state.activePointers.values();
+        const first = iterator.next();
+        const second = iterator.next();
+        if (first.done || second.done) {
+            return null;
+        }
+        return [first.value, second.value];
+    };
+
+    const startPinchZoom = () => {
+        const pair = getPointerPair();
+        if (!pair) return;
+        const [first, second] = pair;
+        state.isPinchZooming = true;
+        state.isPointerDown = false;
+        shell.classList.remove('dragging');
+        state.pinchStartDistance = Math.hypot(
+            second.x - first.x,
+            second.y - first.y
+        );
+        if (state.pinchStartDistance === 0) {
+            state.pinchStartDistance = 1;
+        }
+        state.pinchStartZoom = state.zoom;
+        const rect = shell.getBoundingClientRect();
+        state.pinchCenterStart = ((first.x + second.x) / 2) - rect.left;
+        state.pinchTranslateStart = state.translate;
+    };
+
+    const updatePinchZoom = () => {
+        const pair = getPointerPair();
+        if (!pair) return;
+        const [first, second] = pair;
+        const distance = Math.hypot(
+            second.x - first.x,
+            second.y - first.y
+        );
+        if (distance === 0) return;
+        let targetZoom = state.pinchStartZoom * (distance / state.pinchStartDistance);
+        targetZoom = clamp(targetZoom, state.minZoom, state.maxZoom);
+        const rect = shell.getBoundingClientRect();
+        const center = ((first.x + second.x) / 2) - rect.left;
+        const scale = targetZoom / state.pinchStartZoom;
+        state.zoom = targetZoom;
+        state.translate = center - scale * (state.pinchCenterStart - state.pinchTranslateStart);
+        updateTransforms();
+    };
+
+    const endPinchZoom = () => {
+        state.isPinchZooming = false;
+        state.pinchStartDistance = 0;
+    };
+
     shell.addEventListener('pointerdown', (event) => {
-        state.isPointerDown = true;
-        state.pointerStartX = event.clientX;
-        state.translateStart = state.translate;
-        shell.classList.add('dragging');
+        addActivePointer(event);
+        if (state.activePointers.size === 1) {
+            state.isPointerDown = true;
+            state.pointerStartX = event.clientX;
+            state.translateStart = state.translate;
+            shell.classList.add('dragging');
+        } else if (state.activePointers.size === 2) {
+            startPinchZoom();
+        }
         shell.setPointerCapture(event.pointerId);
     });
 
     const updateFromPointerMove = (event) => {
-        if (!state.isPointerDown) return;
+        if (state.isPinchZooming) {
+            updateActivePointer(event);
+            updatePinchZoom();
+            return;
+        }
+        if (!state.isPointerDown) {
+            updateActivePointer(event);
+            return;
+        }
+        updateActivePointer(event);
         const delta = event.clientX - state.pointerStartX;
         state.translate = state.translateStart + delta;
         updateTransforms();
     };
 
     const endPointer = (event) => {
-        if (!state.isPointerDown) return;
-        state.isPointerDown = false;
-        shell.classList.remove('dragging');
+        updateActivePointer(event);
+        removeActivePointer(event);
+        if (state.isPinchZooming) {
+            if (state.activePointers.size < 2) {
+                endPinchZoom();
+                if (state.activePointers.size === 1) {
+                    const remaining = state.activePointers.values().next().value;
+                    state.isPointerDown = true;
+                    state.pointerStartX = remaining.x;
+                    state.translateStart = state.translate;
+                    shell.classList.add('dragging');
+                }
+            }
+        } else if (state.isPointerDown) {
+            state.isPointerDown = false;
+            shell.classList.remove('dragging');
+        }
+        if (state.activePointers.size === 0) {
+            state.isPointerDown = false;
+            shell.classList.remove('dragging');
+        }
         shell.releasePointerCapture(event.pointerId);
     };
 
