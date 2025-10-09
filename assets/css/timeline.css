@@ -617,6 +617,12 @@ h1 {
     transition: transform 0.2s ease;
     z-index: 2;
     --event-card-offset: 0px;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    appearance: none;
 }
 
 .event-marker {
@@ -648,11 +654,13 @@ h1 {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.event:hover {
+.event:hover,
+.event.event--active {
     z-index: 8;
 }
 
-.event:hover .event-marker::before {
+.event:hover .event-marker::before,
+.event.event--active .event-marker::before {
     opacity: 1;
     transform: scale(1) scaleX(var(--timeline-zoom-inverse, 1));
 }
@@ -676,9 +684,19 @@ h1 {
     transition: transform 0.25s ease, opacity 0.25s ease, max-width 0.25s ease;
 }
 
-.event:hover .event-card {
+.event:hover .event-card,
+.event.event--active .event-card {
     opacity: 1;
     transform: translate(-50%, 0) scale(1.03) scaleX(var(--timeline-zoom-inverse, 1));
+}
+
+.event.event--active .event-card {
+    pointer-events: auto;
+}
+
+.event:focus-visible {
+    outline: 3px solid var(--accent-primary);
+    outline-offset: 6px;
 }
 
 .event-date {

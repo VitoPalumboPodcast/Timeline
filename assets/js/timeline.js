@@ -159,7 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tickElements = [];
     const periodEntries = [];
+    const eventEntries = [];
     let activePeriodEntry = null;
+    let activeEventEntry = null;
 
     const closePeriodEntry = (entry, options = {}) => {
         if (!entry) return;
@@ -194,6 +196,38 @@ document.addEventListener('DOMContentLoaded', () => {
             closePeriodEntry(entry);
         } else {
             openPeriodEntry(entry);
+        }
+    };
+
+    const closeEventEntry = (entry) => {
+        if (!entry) return;
+        entry.element.classList.remove('event--active');
+        entry.element.setAttribute('aria-expanded', 'false');
+        entry.element.setAttribute('aria-pressed', 'false');
+        entry.card.setAttribute('aria-hidden', 'true');
+        if (activeEventEntry === entry) {
+            activeEventEntry = null;
+        }
+    };
+
+    const openEventEntry = (entry) => {
+        if (!entry) return;
+        if (activeEventEntry && activeEventEntry !== entry) {
+            closeEventEntry(activeEventEntry);
+        }
+        entry.element.classList.add('event--active');
+        entry.element.setAttribute('aria-expanded', 'true');
+        entry.element.setAttribute('aria-pressed', 'true');
+        entry.card.setAttribute('aria-hidden', 'false');
+        activeEventEntry = entry;
+    };
+
+    const toggleEventEntry = (entry) => {
+        if (!entry) return;
+        if (activeEventEntry === entry) {
+            closeEventEntry(entry);
+        } else {
+            openEventEntry(entry);
         }
     };
 
@@ -510,33 +544,50 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.addEventListener('pointerdown', (event) => {
-        if (!activePeriodEntry) return;
-        const { element, markers } = activePeriodEntry;
-        if (element.contains(event.target)) {
-            return;
+        if (activePeriodEntry) {
+            const { element, markers } = activePeriodEntry;
+            if (!element.contains(event.target) && !markers.some((marker) => marker.contains(event.target))) {
+                closePeriodEntry(activePeriodEntry);
+            }
         }
-        if (markers.some((marker) => marker.contains(event.target))) {
-            return;
+
+        if (activeEventEntry) {
+            const { element, card } = activeEventEntry;
+            if (!element.contains(event.target) && !card.contains(event.target)) {
+                closeEventEntry(activeEventEntry);
+            }
         }
-        closePeriodEntry(activePeriodEntry);
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && activePeriodEntry) {
-            event.preventDefault();
-            closePeriodEntry(activePeriodEntry, { focusMarker: true });
+        if (event.key === 'Escape') {
+            let handled = false;
+            if (activeEventEntry) {
+                closeEventEntry(activeEventEntry);
+                handled = true;
+            }
+            if (activePeriodEntry) {
+                closePeriodEntry(activePeriodEntry, { focusMarker: true });
+                handled = true;
+            }
+            if (handled) {
+                event.preventDefault();
+            }
         }
     });
 
     const addEvents = () => {
-        data.events.forEach((event) => {
-            const el = document.createElement('div');
+        data.events.forEach((eventData, index) => {
+            const el = document.createElement('button');
+            el.type = 'button';
             el.className = 'event';
-            el.dataset.level = event.level;
-            const position = ((parseDate(event.date) - minYear) / totalYears) * baseWidth;
+            el.dataset.level = eventData.level;
+            el.setAttribute('aria-expanded', 'false');
+            el.setAttribute('aria-pressed', 'false');
+            const position = ((parseDate(eventData.date) - minYear) / totalYears) * baseWidth;
             el.style.left = `${position}px`;
             el.style.top = '50%';
-            const cardOffset = levelCardOffsets[event.level] ?? 0;
+            const cardOffset = levelCardOffsets[eventData.level] ?? 0;
             el.style.setProperty('--event-card-offset', `${cardOffset}px`);
 
             const marker = document.createElement('div');
@@ -545,28 +596,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const card = document.createElement('div');
             card.className = 'event-card';
+            const cardId = `event-card-${index}`;
+            card.id = cardId;
+            card.setAttribute('aria-hidden', 'true');
 
             const date = document.createElement('div');
             date.className = 'event-date';
             date.textContent = new Intl.DateTimeFormat('it-IT', { year: 'numeric', month: 'short', day: 'numeric' }).format(
-                new Date(event.date)
+                new Date(eventData.date)
             );
             card.appendChild(date);
 
             const title = document.createElement('div');
             title.className = 'event-title';
-            title.textContent = event.title;
+            title.textContent = eventData.title;
             card.appendChild(title);
 
             const description = document.createElement('div');
             description.className = 'event-description';
-            description.textContent = event.description;
+            description.textContent = eventData.description;
             card.appendChild(description);
 
-            if (event.image) {
+            if (eventData.image) {
                 const img = document.createElement('img');
-                img.src = event.image;
-                img.alt = event.title;
+                img.src = eventData.image;
+                img.alt = eventData.title;
                 img.loading = 'lazy';
                 img.className = 'event-image';
                 card.appendChild(img);
@@ -574,6 +628,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             el.appendChild(card);
             inner.appendChild(el);
+
+            el.setAttribute('aria-controls', cardId);
+
+            const entry = { element: el, card };
+            eventEntries.push(entry);
+
+            el.addEventListener('click', (domEvent) => {
+                if (card.contains(domEvent.target)) {
+                    return;
+                }
+                toggleEventEntry(entry);
+            });
+
+            el.addEventListener('keydown', (domEvent) => {
+                if (domEvent.key === 'Enter' || domEvent.key === ' ') {
+                    domEvent.preventDefault();
+                    toggleEventEntry(entry);
+                }
+            });
+
+            el.addEventListener('pointerdown', (domEvent) => {
+                domEvent.stopPropagation();
+            });
 
             const mini = document.createElement('div');
             mini.className = 'minimap-event';
