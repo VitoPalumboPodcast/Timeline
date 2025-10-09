@@ -158,6 +158,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelCardOffsets = { 1: 0, 2: 110, 3: 200 };
 
     const tickElements = [];
+    const periodEntries = [];
+    let activePeriodEntry = null;
+
+    const closePeriodEntry = (entry, options = {}) => {
+        if (!entry) return;
+        const { focusMarker = false } = options;
+        entry.element.classList.remove('period--active');
+        entry.element.setAttribute('aria-expanded', 'false');
+        entry.card.setAttribute('aria-hidden', 'true');
+        entry.markers.forEach((marker) => marker.setAttribute('aria-pressed', 'false'));
+        if (focusMarker && entry.markers[0]) {
+            entry.markers[0].focus();
+        }
+        if (activePeriodEntry === entry) {
+            activePeriodEntry = null;
+        }
+    };
+
+    const openPeriodEntry = (entry) => {
+        if (!entry) return;
+        if (activePeriodEntry && activePeriodEntry !== entry) {
+            closePeriodEntry(activePeriodEntry);
+        }
+        entry.element.classList.add('period--active');
+        entry.element.setAttribute('aria-expanded', 'true');
+        entry.card.setAttribute('aria-hidden', 'false');
+        entry.markers.forEach((marker) => marker.setAttribute('aria-pressed', 'true'));
+        activePeriodEntry = entry;
+    };
+
+    const togglePeriodEntry = (entry) => {
+        if (!entry) return;
+        if (activePeriodEntry === entry) {
+            closePeriodEntry(entry);
+        } else {
+            openPeriodEntry(entry);
+        }
+    };
 
     const tickConfigs = [
         {
@@ -254,7 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             inner.appendChild(tick);
 
-            tickElements.push({ tick, year });
+            const label = document.createElement('div');
+            label.className = 'timeline-tick-label';
+            label.style.left = `${position}px`;
+            inner.appendChild(label);
+
+            tickElements.push({ tick, label, year });
         }
     };
 
@@ -264,28 +307,48 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = tickConfigs.find((entry) => state.zoom < entry.maxZoom) || tickConfigs[tickConfigs.length - 1];
         const anchor = Math.ceil(minYear / config.step) * config.step;
 
-        tickElements.forEach(({ tick, year }) => {
+        tickElements.forEach(({ tick, label, year }) => {
             const isFirstYear = year === minYear;
             const isLastYear = year === maxYear;
             const isAligned = year >= anchor && ((year - anchor) % config.step === 0);
             const visible = isFirstYear || isLastYear || isAligned;
             if (!visible) {
                 tick.style.display = 'none';
+                label.style.display = 'none';
+                label.classList.remove('visible');
                 return;
             }
 
             tick.style.display = '';
             const majorStep = config.majorStep ?? config.step;
-            const isMajor = year % majorStep === 0;
+            const isMajor = (year % majorStep === 0) || isFirstYear || isLastYear;
             tick.classList.toggle('major', isMajor);
+
+            if (!isMajor) {
+                label.style.display = 'none';
+                label.classList.remove('visible');
+                return;
+            }
+
+            if (isFirstYear || isLastYear) {
+                label.textContent = String(year);
+            } else if (typeof config.formatLabel === 'function') {
+                label.textContent = config.formatLabel(year);
+            } else {
+                label.textContent = String(year);
+            }
+
+            label.style.display = '';
+            label.classList.add('visible');
         });
     };
 
     const addPeriods = () => {
-        data.periods.forEach((period) => {
+        data.periods.forEach((period, index) => {
             const el = document.createElement('div');
             el.className = 'period';
             el.setAttribute('tabindex', '0');
+            el.setAttribute('aria-expanded', 'false');
 
             const content = document.createElement('div');
             content.className = 'period-content';
@@ -319,6 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const card = document.createElement('div');
             card.className = 'period-card';
+            const cardId = `period-card-${index}`;
+            card.id = cardId;
+            card.setAttribute('aria-hidden', 'true');
 
             if (period.icon) {
                 const cardMedia = document.createElement('div');
@@ -362,18 +428,65 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.background = period.color;
             inner.appendChild(el);
 
-            const createYearMarker = (year, variant) => {
-                const marker = document.createElement('div');
-                marker.className = `period-year-marker period-year-marker--${variant}`;
-                marker.textContent = `${year}`;
-                const position = ((year - minYear) / totalYears) * baseWidth;
-                marker.style.left = `${position}px`;
+            const entry = {
+                element: el,
+                card,
+                markers: []
+            };
+            periodEntries.push(entry);
+
+            el.addEventListener('click', (event) => {
+                if (card.contains(event.target)) {
+                    return;
+                }
+                togglePeriodEntry(entry);
+            });
+
+            el.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    togglePeriodEntry(entry);
+                }
+            });
+
+            el.addEventListener('pointerdown', (event) => {
+                event.stopPropagation();
+            });
+
+            const createBoundaryMarker = (year, variant) => {
+                const marker = document.createElement('button');
+                marker.type = 'button';
+                marker.className = `period-boundary period-boundary--${variant}`;
+                marker.style.left = `${((year - minYear) / totalYears) * baseWidth}px`;
+                marker.setAttribute('aria-controls', cardId);
+                marker.setAttribute('aria-pressed', 'false');
+                const labelSuffix = variant === 'start' ? 'inizio' : 'fine';
+                marker.setAttribute('aria-label', `${labelSuffix} di ${period.name}`);
+                marker.dataset.periodIndex = String(index);
+                entry.markers.push(marker);
+
+                marker.addEventListener('pointerdown', (event) => {
+                    event.stopPropagation();
+                });
+
+                marker.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    togglePeriodEntry(entry);
+                });
+
+                marker.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        togglePeriodEntry(entry);
+                    }
+                });
+
                 mainLine.appendChild(marker);
             };
 
-            createYearMarker(period.start, 'start');
+            createBoundaryMarker(period.start, 'start');
             if (period.end !== period.start) {
-                createYearMarker(period.end, 'end');
+                createBoundaryMarker(period.end, 'end');
             }
 
             const mini = document.createElement('div');
@@ -395,6 +508,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(layoutMinimapLabels);
     };
+
+    document.addEventListener('pointerdown', (event) => {
+        if (!activePeriodEntry) return;
+        const { element, markers } = activePeriodEntry;
+        if (element.contains(event.target)) {
+            return;
+        }
+        if (markers.some((marker) => marker.contains(event.target))) {
+            return;
+        }
+        closePeriodEntry(activePeriodEntry);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && activePeriodEntry) {
+            event.preventDefault();
+            closePeriodEntry(activePeriodEntry, { focusMarker: true });
+        }
+    });
 
     const addEvents = () => {
         data.events.forEach((event) => {
