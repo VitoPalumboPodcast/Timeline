@@ -265,6 +265,7 @@ h1 {
     border: 1px solid var(--control-border);
     overflow: hidden;
     box-shadow: 0 12px 30px rgba(10, 20, 60, 0.25);
+    flex-shrink: 0;
 }
 
 .zoom-btn {
@@ -289,6 +290,8 @@ h1 {
     font-weight: 600;
     border-left: 1px solid var(--control-border);
     border-right: 1px solid var(--control-border);
+    text-align: center;
+    white-space: nowrap;
 }
 
 .legend {
