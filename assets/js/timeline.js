@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const state = {
         zoom: 1,
-        minZoom: 0.2,
+        minZoom: 0.05,
         maxZoom: 4,
         translate: 0,
         isPointerDown: false,
