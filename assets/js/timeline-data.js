@@ -181,7 +181,8 @@ window.TIMELINE_DATA = {
             date: "1848-02-10",
             title: "Carte costituzionali italiane del 1848",
             description: "Tra febbraio e marzo ottengono una carta il Regno delle Due Sicilie, la Toscana, Parma e lo Stato Pontificio. Nota: quasi tutte verranno sospese entro l'anno.",
-            level: 2
+            level: 2,
+            image: "https://www.1848-parl.ch/wGlobal/wGlobal/layout/images/logo_main_1848.svg"
         },
         {
             date: "1848-03-04",
