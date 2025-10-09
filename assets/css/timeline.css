@@ -327,6 +327,7 @@ h1 {
     overflow: hidden;
     cursor: grab;
     z-index: 1;
+    touch-action: none;
 }
 
 .timeline-shell.dragging {
