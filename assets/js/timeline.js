@@ -9,17 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
         zoom: 1,
         minZoom: 0.05,
         maxZoom: 4,
-        translate: 0,
+        translateX: 0,
+        translateY: 0,
         isPointerDown: false,
         pointerStartX: 0,
-        translateStart: 0,
+        pointerStartY: 0,
+        translateStartX: 0,
+        translateStartY: 0,
         timelineWidth: 0,
         activePointers: new Map(),
         isPinchZooming: false,
         pinchStartDistance: 0,
         pinchStartZoom: 1,
         pinchCenterStart: 0,
-        pinchTranslateStart: 0
+        pinchTranslateStartX: 0,
+        contentBounds: { top: 0, bottom: 0 }
     };
 
     const shell = document.querySelector('.timeline-shell');
@@ -474,6 +478,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
+    const measureContentBounds = () => {
+        const elements = inner.querySelectorAll('.period, .event, .timeline-main');
+        if (elements.length === 0) {
+            return { top: 0, bottom: shell.clientHeight };
+        }
+
+        const wrapperRect = wrapper.getBoundingClientRect();
+        let top = Infinity;
+        let bottom = -Infinity;
+
+        elements.forEach((element) => {
+            const rect = element.getBoundingClientRect();
+            top = Math.min(top, rect.top - wrapperRect.top);
+            bottom = Math.max(bottom, rect.bottom - wrapperRect.top);
+        });
+
+        return { top, bottom };
+    };
+
     const updateZoomLevel = () => {
         zoomLevelEl.textContent = `${Math.round(state.zoom * 100)}%`;
     };
@@ -506,13 +529,13 @@ document.addEventListener('DOMContentLoaded', () => {
         minimapViewport.style.width = `${viewWidth * 100}%`;
         const maxOffset = 1 - viewWidth;
         const available = Math.max(1, scaledWidth - shell.clientWidth);
-        const offset = available === 0 ? 0 : clamp(-state.translate / available, 0, 1);
+        const offset = available === 0 ? 0 : clamp(-state.translateX / available, 0, 1);
         minimapViewport.style.left = `${offset * maxOffset * 100}%`;
     };
 
     let yearTimeout;
     const showYearIndicator = () => {
-        const centerPx = -state.translate + shell.clientWidth / 2;
+        const centerPx = -state.translateX + shell.clientWidth / 2;
         const centerRatio = clamp(centerPx / (baseWidth * state.zoom), 0, 1);
         const yearValue = minYear + centerRatio * totalYears;
         yearBadge.textContent = Math.round(yearValue);
@@ -527,21 +550,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const availableSpace = containerWidth - scaledWidth;
 
         if (scaledWidth <= containerWidth) {
-            state.translate = availableSpace / 2;
+            state.translateX = availableSpace / 2;
         } else {
-            const minTranslate = availableSpace;
-            state.translate = clamp(state.translate, minTranslate, 0);
+            const minTranslateX = availableSpace;
+            state.translateX = clamp(state.translateX, minTranslateX, 0);
         }
 
-        wrapper.style.transform = `translateX(${state.translate}px)`;
-        inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
         const textScale = computeTextScale(state.zoom);
+        inner.style.transform = `translateY(-50%) scale(${state.zoom}, 1)`;
         inner.style.setProperty('--timeline-font-scale', textScale.toFixed(3));
         inner.style.setProperty('--timeline-zoom', state.zoom.toFixed(3));
         inner.style.setProperty('--timeline-zoom-inverse', (1 / state.zoom).toFixed(3));
+
+        updateDetailLevels();
+
+        const bounds = measureContentBounds();
+        state.contentBounds = bounds;
+        const containerHeight = shell.clientHeight;
+        const contentHeight = bounds.bottom - bounds.top;
+
+        if (contentHeight <= containerHeight) {
+            const centeredOffset = (containerHeight - contentHeight) / 2 - bounds.top;
+            state.translateY = centeredOffset;
+        } else {
+            const maxTranslateY = -bounds.top;
+            const minTranslateY = containerHeight - bounds.bottom;
+            state.translateY = clamp(state.translateY, minTranslateY, maxTranslateY);
+        }
+
+        wrapper.style.transform = `translate(${state.translateX}px, ${state.translateY}px)`;
         state.timelineWidth = scaledWidth;
         updateZoomLevel();
-        updateDetailLevels();
         updateMinimap();
         showYearIndicator();
     };
@@ -552,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const scaleChange = state.zoom / previousZoom;
         const rect = shell.getBoundingClientRect();
         const origin = originX !== undefined ? originX - rect.left : rect.width / 2;
-        state.translate = origin - scaleChange * (origin - state.translate);
+        state.translateX = origin - scaleChange * (origin - state.translateX);
         updateTransforms();
     };
 
@@ -618,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.pinchStartZoom = state.zoom;
         const rect = shell.getBoundingClientRect();
         state.pinchCenterStart = ((first.x + second.x) / 2) - rect.left;
-        state.pinchTranslateStart = state.translate;
+        state.pinchTranslateStartX = state.translateX;
     };
 
     const updatePinchZoom = () => {
@@ -636,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const center = ((first.x + second.x) / 2) - rect.left;
         const scale = targetZoom / state.pinchStartZoom;
         state.zoom = targetZoom;
-        state.translate = center - scale * (state.pinchCenterStart - state.pinchTranslateStart);
+        state.translateX = center - scale * (state.pinchCenterStart - state.pinchTranslateStartX);
         updateTransforms();
     };
 
@@ -650,7 +689,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state.activePointers.size === 1) {
             state.isPointerDown = true;
             state.pointerStartX = event.clientX;
-            state.translateStart = state.translate;
+            state.pointerStartY = event.clientY;
+            state.translateStartX = state.translateX;
+            state.translateStartY = state.translateY;
             shell.classList.add('dragging');
         } else if (state.activePointers.size === 2) {
             startPinchZoom();
@@ -669,8 +710,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         updateActivePointer(event);
-        const delta = event.clientX - state.pointerStartX;
-        state.translate = state.translateStart + delta;
+        const deltaX = event.clientX - state.pointerStartX;
+        const deltaY = event.clientY - state.pointerStartY;
+        state.translateX = state.translateStartX + deltaX;
+        state.translateY = state.translateStartY + deltaY;
         updateTransforms();
     };
 
@@ -684,7 +727,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const remaining = state.activePointers.values().next().value;
                     state.isPointerDown = true;
                     state.pointerStartX = remaining.x;
-                    state.translateStart = state.translate;
+                    state.pointerStartY = remaining.y;
+                    state.translateStartX = state.translateX;
+                    state.translateStartY = state.translateY;
                     shell.classList.add('dragging');
                 }
             }
@@ -708,7 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scaledWidth <= shell.clientWidth) return;
         const maxTranslate = 0;
         const minTranslate = shell.clientWidth - scaledWidth;
-        state.translate = clamp(-ratio * (scaledWidth - shell.clientWidth), minTranslate, maxTranslate);
+        state.translateX = clamp(-ratio * (scaledWidth - shell.clientWidth), minTranslate, maxTranslate);
         updateTransforms();
     };
 
