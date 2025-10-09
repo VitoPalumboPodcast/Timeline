@@ -286,6 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 content.appendChild(iconWrapper);
             }
 
+            const startYear = document.createElement('span');
+            startYear.className = 'period-start-year';
+            startYear.textContent = `${period.start}`;
+            content.appendChild(startYear);
+
             const label = document.createElement('span');
             label.className = 'period-name';
             label.textContent = period.name;
@@ -295,6 +300,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const card = document.createElement('div');
             card.className = 'period-card';
+
+            if (period.icon) {
+                const cardMedia = document.createElement('div');
+                cardMedia.className = 'period-card-media';
+
+                const cardImage = document.createElement('img');
+                cardImage.className = 'period-card-image';
+                cardImage.src = period.icon;
+                cardImage.alt = period.iconAlt ?? period.name;
+                cardImage.loading = 'lazy';
+                cardImage.decoding = 'async';
+
+                cardMedia.appendChild(cardImage);
+                card.appendChild(cardMedia);
+            }
 
             const range = document.createElement('div');
             range.className = 'period-range';
