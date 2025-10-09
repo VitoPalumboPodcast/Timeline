@@ -20,6 +20,9 @@
     --period-shadow: rgba(0, 0, 0, 0.35);
     --period-start-bg: rgba(8, 11, 36, 0.45);
     --period-start-border: rgba(255, 255, 255, 0.32);
+    --period-date-bg: rgba(8, 11, 36, 0.55);
+    --period-date-border: rgba(255, 255, 255, 0.35);
+    --period-date-text: #ffffff;
     --event-marker-gradient: linear-gradient(135deg, #ffffff, #c5cae9);
     --event-marker-outline: rgba(255, 255, 255, 0.4);
     --event-marker-glow: rgba(255, 255, 255, 0.75);
@@ -69,6 +72,9 @@
     --period-shadow: rgba(122, 130, 180, 0.25);
     --period-start-bg: rgba(92, 107, 192, 0.18);
     --period-start-border: rgba(92, 107, 192, 0.28);
+    --period-date-bg: rgba(255, 255, 255, 0.92);
+    --period-date-border: rgba(92, 107, 192, 0.35);
+    --period-date-text: #1a1b2e;
     --event-marker-gradient: linear-gradient(135deg, #5c6bc0, #9fa8da);
     --event-marker-outline: rgba(92, 107, 192, 0.35);
     --event-marker-glow: rgba(92, 107, 192, 0.45);
@@ -423,9 +429,9 @@ h1 {
 }
 
 .period-content {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: clamp(8px, calc(10px * var(--timeline-font-scale, 1)), 16px);
     width: 100%;
     transform: scaleX(var(--timeline-zoom-inverse, 1));
@@ -437,35 +443,30 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: clamp(6px, calc(8px * var(--timeline-font-scale, 1)), 14px);
-    justify-self: center;
     min-width: 0;
     text-align: center;
 }
 
-.period-start-year,
-.period-end-year {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.period-date-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1));
     padding: 4px 10px;
-    border-radius: 999px;
-    font-size: clamp(0.7rem, 0.68rem + 0.24vw, 0.95rem);
+    border-radius: 12px;
+    font-size: clamp(0.68rem, 0.66rem + 0.22vw, 0.9rem);
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--period-text-color);
-    background: var(--period-start-bg);
-    box-shadow: inset 0 0 0 1px var(--period-start-border);
+    color: var(--period-date-text);
+    background: var(--period-date-bg);
+    box-shadow: inset 0 0 0 1px var(--period-date-border), 0 8px 18px rgba(5, 7, 19, 0.35);
     white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
 }
 
-.period-start-year {
-    justify-self: start;
-}
-
-.period-end-year {
-    justify-self: end;
-    text-align: right;
+.period-date-marker--end {
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1));
 }
 
 .period-icon-wrapper {
