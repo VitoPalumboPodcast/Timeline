@@ -132,7 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
     inner.style.width = `${baseWidth}px`;
     mainLine.style.width = `${baseWidth}px`;
 
-    const laneOffsets = [-110, 90, -180, 200];
+    const laneOffsets = [-150, 120, -240, 260, -330, 360, -420];
+    const computeLaneOffset = (lane) => {
+        if (Number.isFinite(laneOffsets[lane])) {
+            return laneOffsets[lane];
+        }
+
+        const direction = lane % 2 === 0 ? -1 : 1;
+        const tier = Math.floor(lane / 2);
+        const baseDistance = 150 + tier * 90;
+        return direction * baseDistance;
+    };
     const minimapLaneBase = 35;
     const minimapLaneSpacing = 15;
     const levelCardOffsets = { 1: 0, 2: 110, 3: 200 };
@@ -348,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const width = ((period.end - period.start) / totalYears) * baseWidth;
             el.style.left = `${start}px`;
             el.style.width = `${width}px`;
-            const laneOffset = laneOffsets[period.lane] ?? 0;
+            const laneOffset = computeLaneOffset(period.lane);
             el.style.top = `calc(50% + ${laneOffset}px)`;
             el.style.background = period.color;
             inner.appendChild(el);
