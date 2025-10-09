@@ -66,8 +66,8 @@ window.TIMELINE_DATA = {
             end: 1876,
             color: "rgba(129,212,250,0.32)",
             lane: 0,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Antorcha.svg",
-            iconAlt: "Torcia simbolica associata alla Destra storica",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/4/46/Cavour-portrait-03.png",
+            iconAlt: "Ritratto di Camillo Benso conte di Cavour",
             description: "La classe dirigente moderata consolida il Regno con centralizzazione fiscale, ordine pubblico e il perseguimento del pareggio di bilancio."
         },
         {
@@ -96,8 +96,8 @@ window.TIMELINE_DATA = {
             end: 1914,
             color: "rgba(255,214,126,0.32)",
             lane: 3,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Giovanni_Giolitti_1920.jpg",
-            iconAlt: "Giovanni Giolitti",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Liste_1924_-_02.svg",
+            iconAlt: "Manifesto elettorale della Lista Nazionale del 1924",
             description: "Giolitti guida riforme sociali, mediazione con i movimenti operai e sviluppo industriale all'interno dello Stato liberale."
         },
         {
@@ -134,8 +134,8 @@ window.TIMELINE_DATA = {
             end: 1945,
             color: "rgba(255,112,67,0.55)",
             lane: 4,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/7/7e/WWII_Military_Collage.png",
-            iconAlt: "Montaggio di scene militari della Seconda guerra mondiale",
+            icon: "https://www.etsy.com/it/listing/1605987909/carro-armato-t34-in-formato-svg",
+            iconAlt: "Illustrazione vettoriale di un carro armato T-34",
             description: "Il conflitto globale travolge l'Italia tra campagne militari fallimentari, occupazione straniera, Resistenza e profonde lacerazioni civili."
         },
         {
@@ -144,6 +144,8 @@ window.TIMELINE_DATA = {
             end: 1946,
             color: "rgba(186,104,200,0.45)",
             lane: 0,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/5/57/DC_Party_Logo_%281943-1968%29.svg",
+            iconAlt: "Logo scudocrociato della Democrazia Cristiana",
             description: "Dal crollo del regime alla cobelligeranza, i Comitati di Liberazione e i governi di unità traghettano il Paese verso la scelta repubblicana."
         },
         {
@@ -320,7 +322,7 @@ window.TIMELINE_DATA = {
             title: "Referendum istituzionale e Costituente",
             description: "Gli italiani scelgono la Repubblica e eleggono l'Assemblea Costituente incaricata di redigere la nuova Carta.",
             level: 1,
-            image: "https://upload.wikimedia.org/wikipedia/commons/1/13/Voting_in_Italy_1946.jpg"
+            image: "https://upload.wikimedia.org/wikipedia/commons/4/42/Assemblea_Costituente_1946.svg"
         },
         {
             date: "1947-12-22",
