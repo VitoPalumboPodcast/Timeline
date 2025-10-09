@@ -296,10 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const content = document.createElement('div');
             content.className = 'period-content';
 
-            const startYear = document.createElement('span');
-            startYear.className = 'period-start-year';
-            startYear.textContent = `${period.start}`;
-
             const main = document.createElement('div');
             main.className = 'period-main';
 
@@ -323,13 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             label.textContent = period.name;
             main.appendChild(label);
 
-            const endYear = document.createElement('span');
-            endYear.className = 'period-end-year';
-            endYear.textContent = `${period.end}`;
-
-            content.appendChild(startYear);
             content.appendChild(main);
-            content.appendChild(endYear);
 
             el.appendChild(content);
 
@@ -377,6 +367,20 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.top = `calc(50% + ${laneOffset}px)`;
             el.style.background = period.color;
             inner.appendChild(el);
+
+            const createYearMarker = (year, variant) => {
+                const marker = document.createElement('div');
+                marker.className = `period-year-marker period-year-marker--${variant}`;
+                marker.textContent = `${year}`;
+                const position = ((year - minYear) / totalYears) * baseWidth;
+                marker.style.left = `${position}px`;
+                mainLine.appendChild(marker);
+            };
+
+            createYearMarker(period.start, 'start');
+            if (period.end !== period.start) {
+                createYearMarker(period.end, 'end');
+            }
 
             const mini = document.createElement('div');
             mini.className = 'minimap-period';

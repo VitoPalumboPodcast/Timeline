@@ -423,9 +423,9 @@ h1 {
 }
 
 .period-content {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: clamp(8px, calc(10px * var(--timeline-font-scale, 1)), 16px);
     width: 100%;
     transform: scaleX(var(--timeline-zoom-inverse, 1));
@@ -442,14 +442,17 @@ h1 {
     text-align: center;
 }
 
-.period-start-year,
-.period-end-year {
+.period-year-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1));
+    transform-origin: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 4px 10px;
     border-radius: 999px;
-    font-size: clamp(0.7rem, 0.68rem + 0.24vw, 0.95rem);
+    font-size: clamp(0.6rem, 0.58rem + 0.18vw, 0.85rem);
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -457,16 +460,12 @@ h1 {
     background: var(--period-start-bg);
     box-shadow: inset 0 0 0 1px var(--period-start-border);
     white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
+    line-height: 1.1;
 }
 
-.period-start-year {
-    justify-self: start;
-}
 
-.period-end-year {
-    justify-self: end;
-    text-align: right;
-}
 
 .period-icon-wrapper {
     flex: 0 0 auto;
