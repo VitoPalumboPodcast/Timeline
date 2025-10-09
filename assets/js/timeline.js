@@ -158,11 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelCardOffsets = { 1: 0, 2: 110, 3: 200 };
 
     const tickElements = [];
+    let activePeriodElement = null;
 
     const tickConfigs = [
         {
-            maxZoom: 0.35,
-            step: 50,
+            maxZoom: 0.3,
+            step: 40,
             majorStep: 100,
             formatLabel: (year) => {
                 const century = Math.floor((year - 1) / 100) + 1;
@@ -177,8 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             maxZoom: 0.55,
-            step: 25,
-            majorStep: 50
+            step: 20,
+            majorStep: 40
         },
         {
             maxZoom: 0.9,
@@ -193,12 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             maxZoom: 2.3,
             step: 2,
-            majorStep: 10
+            majorStep: 6
         },
         {
             maxZoom: Infinity,
             step: 1,
-            majorStep: 5
+            majorStep: 2
         }
     ];
 
@@ -291,6 +292,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const setPeriodActiveState = (periodEl, isActive) => {
+        if (!periodEl) return;
+        periodEl.classList.toggle('is-active', isActive);
+        const markers = periodEl.__yearMarkers;
+        if (Array.isArray(markers)) {
+            markers.forEach((marker) => {
+                marker.classList.toggle('is-active', isActive);
+                marker.setAttribute('aria-pressed', String(isActive));
+            });
+        }
+    };
+
+    const openPeriodCard = (periodEl, { focus = false } = {}) => {
+        if (activePeriodElement && activePeriodElement !== periodEl) {
+            setPeriodActiveState(activePeriodElement, false);
+        }
+        activePeriodElement = periodEl;
+        setPeriodActiveState(periodEl, true);
+        if (focus && typeof periodEl.focus === 'function') {
+            periodEl.focus({ preventScroll: true });
+        }
+    };
+
+    const closeActivePeriodCard = () => {
+        if (!activePeriodElement) return;
+        setPeriodActiveState(activePeriodElement, false);
+        activePeriodElement = null;
+    };
+
     const addPeriods = () => {
         data.periods.forEach((period) => {
             const el = document.createElement('div');
@@ -372,19 +402,51 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.background = period.color;
             inner.appendChild(el);
 
+            const markers = [];
+
             const createYearMarker = (year, variant) => {
-                const marker = document.createElement('div');
+                const marker = document.createElement('button');
+                marker.type = 'button';
                 marker.className = `period-year-marker period-year-marker--${variant}`;
-                marker.textContent = `${year}`;
+                marker.setAttribute('aria-label', `${variant === 'start' ? 'Inizio' : 'Fine'} di ${period.name}: ${year}`);
+                marker.title = `${variant === 'start' ? 'Inizio' : 'Fine'} · ${year}`;
                 const position = ((year - minYear) / totalYears) * baseWidth;
                 marker.style.left = `${position}px`;
+                marker.dataset.year = String(year);
+                marker.setAttribute('aria-pressed', 'false');
+                marker.addEventListener('pointerdown', (event) => {
+                    event.stopPropagation();
+                });
+                marker.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    if (activePeriodElement === el) {
+                        closeActivePeriodCard();
+                    } else {
+                        openPeriodCard(el, { focus: true });
+                    }
+                });
                 mainLine.appendChild(marker);
+                markers.push(marker);
             };
 
             createYearMarker(period.start, 'start');
             if (period.end !== period.start) {
                 createYearMarker(period.end, 'end');
             }
+
+            el.__yearMarkers = markers;
+
+            el.addEventListener('pointerdown', (event) => {
+                event.stopPropagation();
+            });
+
+            el.addEventListener('focusout', (event) => {
+                if (!el.contains(event.relatedTarget)) {
+                    if (activePeriodElement === el) {
+                        closeActivePeriodCard();
+                    }
+                }
+            });
 
             const mini = document.createElement('div');
             mini.className = 'minimap-period';
@@ -685,6 +747,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     shell.addEventListener('pointerdown', (event) => {
+        if (event.target.closest('.period-year-marker, .period-card, .event-card, .event-marker, .zoom-controls, .theme-toggle')) {
+            return;
+        }
         addActivePointer(event);
         if (state.activePointers.size === 1) {
             state.isPointerDown = true;
@@ -786,6 +851,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawRatio = clamp((event.clientX - rect.left) / rect.width, 0, 1);
         const targetRatio = availableRatio === 0 ? 0 : clamp(rawRatio - viewRatio / 2, 0, availableRatio) / availableRatio;
         moveViewportToRatio(targetRatio);
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+        if (event.target.closest('.period, .period-year-marker, .period-card')) {
+            return;
+        }
+        closeActivePeriodCard();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeActivePeriodCard();
+        }
     });
 
     window.addEventListener('resize', () => {
