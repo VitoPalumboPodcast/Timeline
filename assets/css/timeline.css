@@ -341,7 +341,7 @@ h1 {
 .timeline-wrapper {
     position: absolute;
     inset: 0;
-    transform: translateX(0px);
+    transform: translate(0, 0);
     will-change: transform;
 }
 
