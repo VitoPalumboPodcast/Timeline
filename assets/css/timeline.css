@@ -454,7 +454,7 @@ h1 {
 .period-boundary {
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1));
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1));
     transform-origin: center;
     min-width: 0;
     padding: 4px 6px;
@@ -479,11 +479,11 @@ h1 {
 
 .period-boundary:hover {
     color: var(--accent-primary);
-    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1)) scale(1.05);
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1)) scale(1.05);
 }
 
 .period-boundary[aria-pressed="true"] {
-    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1)) scale(1.08);
+    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1)) scale(1.08);
     background: var(--accent-primary);
     color: var(--year-badge-text);
 }
