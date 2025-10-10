@@ -144,7 +144,7 @@ window.TIMELINE_DATA = {
             end: 1946,
             color: "rgba(186,104,200,0.45)",
             lane: 0,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/5/57/DC_Party_Logo_%281943-1968%29.svg",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/8/86/DC_Party_Logo_%281968-1992%29.svg",
             iconAlt: "Logo scudocrociato della Democrazia Cristiana",
             description: "Dal crollo del regime alla cobelligeranza, i Comitati di Liberazione e i governi di unità traghettano il Paese verso la scelta repubblicana."
         },
