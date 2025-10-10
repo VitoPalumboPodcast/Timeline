@@ -134,7 +134,7 @@ window.TIMELINE_DATA = {
             end: 1945,
             color: "rgba(255,112,67,0.55)",
             lane: 4,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/1/10/War_Ensign_of_Germany_%281935%E2%80%931938%29.svg",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/a/a4/War_Ensign_of_Germany_%281935%E2%80%931938%29.svg",
             iconAlt: "Reichskriegsflagge tedesca 1935-1938",
             description: "Il conflitto globale travolge l'Italia tra campagne militari fallimentari, occupazione straniera, Resistenza e profonde lacerazioni civili."
         },
