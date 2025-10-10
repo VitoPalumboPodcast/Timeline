@@ -701,14 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zoomLevelEl.textContent = `${Math.round(state.zoom * 100)}%`;
     };
 
-    const computeTextScale = (zoom) => {
-        if (zoom >= 1) {
-            const compensated = Math.pow(zoom, -0.35);
-            return clamp(compensated, 0.85, 1);
-        }
-        const compensated = 1 / zoom;
-        return clamp(compensated, 1, 5);
-    };
+    const computeTextScale = () => 1;
 
     const updateDetailLevels = () => {
         inner.classList.remove('zoom-low', 'zoom-medium', 'zoom-high');
