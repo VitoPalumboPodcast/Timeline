@@ -450,43 +450,43 @@ h1 {
 }
 
 
+
 .period-boundary {
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%) scaleX(var(--timeline-zoom-inverse, 1));
+    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1));
     transform-origin: center;
-    width: 20px;
-    height: 20px;
+    min-width: 42px;
+    padding: 4px 10px;
     border-radius: 999px;
-    border: 1px solid var(--period-boundary-border);
-    background: var(--period-boundary-bg);
-    box-shadow: 0 0 0 2px rgba(5, 24, 52, 0.3), 0 0 18px var(--period-boundary-glow);
+    border: 1px solid var(--tick-label-border);
+    background: var(--tick-label-bg);
+    color: var(--tick-label-color);
+    font-size: clamp(0.65rem, 0.6rem + 0.18vw, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-align: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+    box-shadow: 0 8px 16px rgba(8, 11, 36, 0.35);
     cursor: pointer;
-    padding: 0;
-    color: transparent;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
     z-index: 4;
 }
 
-.period-boundary::after {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65);
-}
-
 .period-boundary:hover {
-    transform: translate(-50%, -50%) scale(1.1) scaleX(var(--timeline-zoom-inverse, 1));
+    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1)) scale(1.08);
+    box-shadow: 0 10px 22px rgba(8, 11, 36, 0.4);
 }
 
 .period-boundary[aria-pressed="true"] {
-    transform: translate(-50%, -50%) scale(1.2) scaleX(var(--timeline-zoom-inverse, 1));
-    box-shadow: 0 0 0 2px rgba(5, 24, 52, 0.36), 0 0 22px var(--period-boundary-glow);
+    transform: translate(-50%, -50%) scale(var(--timeline-zoom-inverse, 1)) scale(1.12);
+    background: var(--accent-primary);
+    color: var(--year-badge-text);
+    box-shadow: 0 12px 24px rgba(8, 11, 36, 0.45);
 }
 
 .period-boundary:focus-visible {
