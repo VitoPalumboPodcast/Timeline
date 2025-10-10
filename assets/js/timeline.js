@@ -494,6 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 marker.style.left = `${((year - minYear) / totalYears) * baseWidth}px`;
                 marker.setAttribute('aria-controls', cardId);
                 marker.setAttribute('aria-pressed', 'false');
+                marker.textContent = String(year);
                 const labelSuffix = variant === 'start' ? 'inizio' : 'fine';
                 marker.setAttribute('aria-label', `${labelSuffix} di ${period.name}`);
                 marker.dataset.periodIndex = String(index);
