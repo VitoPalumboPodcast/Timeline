@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const yearBadge = document.querySelector('.year-badge');
     const particlesLayer = document.querySelector('.bg-particles');
     const themeToggle = document.querySelector('.theme-toggle');
+    const headerBar = document.querySelector('header');
     const rootElement = document.documentElement;
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     const themeStorageKey = 'timeline-theme';
@@ -167,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!entry) return;
         const { focusMarker = false } = options;
         entry.element.classList.remove('period--active');
+        entry.element.classList.remove('period--flipped');
         entry.element.setAttribute('aria-expanded', 'false');
         entry.card.setAttribute('aria-hidden', 'true');
         entry.markers.forEach((marker) => marker.setAttribute('aria-pressed', 'false'));
@@ -188,6 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.card.setAttribute('aria-hidden', 'false');
         entry.markers.forEach((marker) => marker.setAttribute('aria-pressed', 'true'));
         activePeriodEntry = entry;
+        adjustFloatingCardPlacement(entry, {
+            flipClass: 'period--flipped',
+            activeClass: 'period--active',
+            schedule: true
+        });
     };
 
     const togglePeriodEntry = (entry) => {
@@ -202,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeEventEntry = (entry) => {
         if (!entry) return;
         entry.element.classList.remove('event--active');
+        entry.element.classList.remove('event--flipped');
         entry.element.setAttribute('aria-expanded', 'false');
         entry.element.setAttribute('aria-pressed', 'false');
         entry.card.setAttribute('aria-hidden', 'true');
@@ -220,6 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.element.setAttribute('aria-pressed', 'true');
         entry.card.setAttribute('aria-hidden', 'false');
         activeEventEntry = entry;
+        adjustFloatingCardPlacement(entry, {
+            flipClass: 'event--flipped',
+            activeClass: 'event--active',
+            schedule: true
+        });
     };
 
     const toggleEventEntry = (entry) => {
@@ -229,6 +242,70 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             openEventEntry(entry);
         }
+    };
+
+    const getSafeCardBounds = () => {
+        const headerBottom = headerBar ? headerBar.getBoundingClientRect().bottom : 0;
+        const topSafe = headerBottom + 12;
+        const bottomSafe = window.innerHeight - 24;
+        return { topSafe, bottomSafe };
+    };
+
+    const adjustFloatingCardPlacement = (entry, options = {}) => {
+        if (!entry) return;
+        const {
+            flipClass,
+            activeClass,
+            schedule = false
+        } = options;
+        if (!flipClass || !activeClass) return;
+
+        const evaluatePlacement = () => {
+            if (!entry.element.classList.contains(activeClass)) {
+                entry.element.classList.remove(flipClass);
+                return;
+            }
+
+            entry.element.classList.remove(flipClass);
+            const { topSafe, bottomSafe } = getSafeCardBounds();
+            const rect = entry.card.getBoundingClientRect();
+            const overflowTop = Math.max(0, topSafe - rect.top);
+            const overflowBottom = Math.max(0, rect.bottom - bottomSafe);
+            const totalOverflow = overflowTop + overflowBottom;
+
+            if (totalOverflow === 0) {
+                return;
+            }
+
+            entry.element.classList.add(flipClass);
+            const flippedRect = entry.card.getBoundingClientRect();
+            const flippedOverflowTop = Math.max(0, topSafe - flippedRect.top);
+            const flippedOverflowBottom = Math.max(0, flippedRect.bottom - bottomSafe);
+            const flippedTotalOverflow = flippedOverflowTop + flippedOverflowBottom;
+
+            if (flippedTotalOverflow > 0 && flippedTotalOverflow >= totalOverflow) {
+                entry.element.classList.remove(flipClass);
+            }
+        };
+
+        if (schedule) {
+            requestAnimationFrame(() => requestAnimationFrame(evaluatePlacement));
+        } else {
+            evaluatePlacement();
+        }
+    };
+
+    const refreshActiveCardPlacement = (options = {}) => {
+        adjustFloatingCardPlacement(activePeriodEntry, {
+            flipClass: 'period--flipped',
+            activeClass: 'period--active',
+            ...options
+        });
+        adjustFloatingCardPlacement(activeEventEntry, {
+            flipClass: 'event--flipped',
+            activeClass: 'event--active',
+            ...options
+        });
     };
 
     const tickConfigs = [
@@ -776,6 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateZoomLevel();
         updateMinimap();
         showYearIndicator();
+        refreshActiveCardPlacement();
     };
 
     const zoomTo = (factor, originX) => {
@@ -984,6 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         updateTransforms();
         requestAnimationFrame(layoutMinimapLabels);
+        refreshActiveCardPlacement({ schedule: true });
     });
 
     const init = () => {

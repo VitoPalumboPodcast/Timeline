@@ -570,6 +570,17 @@ h1 {
     pointer-events: auto;
 }
 
+.period--flipped .period-card {
+    top: calc(100% + 18px);
+    bottom: auto;
+    transform-origin: top;
+    transform: translate(-50%, -12px) scaleX(var(--timeline-zoom-inverse, 1));
+}
+
+.period--flipped.period--active .period-card {
+    transform: translate(-50%, 0) scale(1.02) scaleX(var(--timeline-zoom-inverse, 1));
+}
+
 .period-range {
     font-size: clamp(0.72rem, calc(0.8rem * var(--timeline-font-scale, 1)), 0.95rem);
     letter-spacing: 0.12em;
@@ -691,6 +702,18 @@ h1 {
 
 .event.event--active .event-card {
     pointer-events: auto;
+}
+
+.event--flipped .event-card {
+    top: calc(100% + 18px + var(--event-card-offset, 0px));
+    bottom: auto;
+    transform-origin: top;
+    transform: translate(-50%, -12px) scaleX(var(--timeline-zoom-inverse, 1));
+}
+
+.event--flipped:hover .event-card,
+.event--flipped.event--active .event-card {
+    transform: translate(-50%, 0) scale(1.03) scaleX(var(--timeline-zoom-inverse, 1));
 }
 
 .event:focus-visible {
