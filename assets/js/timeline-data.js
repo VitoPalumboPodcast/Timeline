@@ -76,8 +76,8 @@ window.TIMELINE_DATA = {
             end: 1896,
             color: "rgba(129,212,250,0.32)",
             lane: 1,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/3/30/Agostino_Depretis_%28cropped%29.jpg",
-            iconAlt: "Agostino Depretis",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/6/66/%CE%A3%CE%BF%CF%83%CE%B9%CE%B1%CE%BB%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE_%CE%A0%CE%BF%CF%81%CE%B5%CE%AF%CE%B1-01.svg",
+            iconAlt: "Simbolo socialista stilizzato associato alla Sinistra storica",
             description: "I governi Depretis e Crispi ampliano l'elettorato, sperimentano il trasformismo e promuovono modernizzazione e ambizioni coloniali."
         },
         {
