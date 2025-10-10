@@ -106,8 +106,8 @@ window.TIMELINE_DATA = {
             end: 1922,
             color: "rgba(255,214,126,0.28)",
             lane: 4,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/IWM-Q-70217-Italian_troops_WWI.jpg",
-            iconAlt: "Truppe italiane durante la Prima guerra mondiale",
+            icon: "https://www.clker.com/cliparts/c/e/b/5/1197120631672907999johnny_automatic_WWI_officer.svg",
+            iconAlt: "Illustrazione di un ufficiale della Prima guerra mondiale",
             description: "La partecipazione al conflitto e la difficile riconversione alimentano debiti, rivendicazioni dei reduci e forti conflitti sociali."
         },
         {
