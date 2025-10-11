@@ -48,6 +48,10 @@
     --toggle-thumb: #f5f7ff;
     --toggle-icon-dark: #f5f7ff;
     --toggle-icon-light: #f5f7ff;
+    --timeline-top-offset: 96px;
+    --timeline-bottom-offset: 118px;
+    --header-peek-height: 72px;
+    --minimap-peek-height: 70px;
 }
 
 :root[data-theme="light"] {
@@ -100,6 +104,10 @@
     --toggle-thumb: #f5f8ff;
     --toggle-icon-dark: #394472;
     --toggle-icon-light: #f0b429;
+    --timeline-top-offset: 96px;
+    --timeline-bottom-offset: 118px;
+    --header-peek-height: 72px;
+    --minimap-peek-height: 70px;
 }
 
 * {
@@ -151,7 +159,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    padding: 22px 32px;
+    padding: 16px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -160,6 +168,38 @@ header {
     backdrop-filter: blur(18px);
     background: var(--header-bg);
     border-bottom: 1px solid var(--header-border);
+    transition: transform 0.45s ease, opacity 0.35s ease;
+    will-change: transform, opacity;
+}
+
+header.is-collapsed {
+    transform: translateY(calc(-100% + var(--header-peek-height)));
+    opacity: 0.72;
+}
+
+header.is-collapsed:hover,
+header.is-collapsed:focus-within {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+body.layout-header-collapsed header {
+    transform: translateY(calc(-100% + var(--header-peek-height)));
+    opacity: 0.72;
+}
+
+body.layout-header-collapsed header:hover,
+body.layout-header-collapsed header:focus-within {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+body.layout-header-collapsed {
+    --timeline-top-offset: calc(var(--header-peek-height) + 18px);
+}
+
+body.layout-minimap-collapsed {
+    --timeline-bottom-offset: calc(var(--minimap-peek-height) + 24px);
 }
 
 h1 {
@@ -174,7 +214,7 @@ h1 {
 
 .controls {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     align-items: center;
 }
 
@@ -326,10 +366,10 @@ h1 {
 
 .timeline-shell {
     position: absolute;
-    top: 110px;
+    top: var(--timeline-top-offset);
     left: 0;
     right: 0;
-    bottom: 120px;
+    bottom: var(--timeline-bottom-offset);
     overflow: hidden;
     cursor: grab;
     z-index: 1;
@@ -768,19 +808,43 @@ h1 {
 
 .minimap {
     position: fixed;
-    bottom: 26px;
+    bottom: 22px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
     width: min(92vw, 1080px);
-    height: 156px;
-    border-radius: 36px;
+    height: 142px;
+    border-radius: 32px;
     background: var(--minimap-bg);
     border: 1px solid var(--minimap-border);
-    padding: 22px 28px 30px;
+    padding: 18px 24px 24px;
     display: flex;
     align-items: stretch;
     z-index: 3;
-    box-shadow: 0 28px 70px rgba(0,0,0,0.46);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+    transition: transform 0.45s ease, opacity 0.35s ease;
+    will-change: transform, opacity;
+}
+
+.minimap.is-collapsed {
+    transform: translate3d(-50%, calc(100% - var(--minimap-peek-height)), 0);
+    opacity: 0.82;
+}
+
+.minimap.is-collapsed:hover,
+.minimap.is-collapsed:focus-within {
+    transform: translate3d(-50%, 0, 0);
+    opacity: 1;
+}
+
+body.layout-minimap-collapsed .minimap {
+    transform: translate3d(-50%, calc(100% - var(--minimap-peek-height)), 0);
+    opacity: 0.82;
+}
+
+body.layout-minimap-collapsed .minimap:hover,
+body.layout-minimap-collapsed .minimap:focus-within {
+    transform: translate3d(-50%, 0, 0);
+    opacity: 1;
 }
 
 .minimap-track {
@@ -789,7 +853,7 @@ h1 {
     height: 100%;
     border-radius: 22px;
     background: var(--minimap-track-bg);
-    padding: 10px 0 18px;
+    padding: 8px 0 16px;
     overflow: hidden;
 }
 
@@ -869,6 +933,10 @@ h1 {
 }
 
 @media (max-width: 860px) {
+    :root {
+        --minimap-peek-height: 54px;
+    }
+
     header {
         flex-direction: column;
         align-items: flex-start;
@@ -887,19 +955,28 @@ h1 {
 
     .minimap {
         width: 92vw;
-        height: 70px;
-        padding: 12px 16px;
+        height: 82px;
+        padding: 12px 18px;
+    }
+
+    .minimap.is-collapsed,
+    body.layout-minimap-collapsed .minimap {
+        transform: translate3d(-50%, calc(100% - 54px), 0);
     }
 }
 
 @media (max-width: 520px) {
+    :root {
+        --header-peek-height: 60px;
+    }
+
     header {
         padding: 18px 18px;
     }
 
     .timeline-shell {
-        top: 120px;
-        bottom: 110px;
+        top: calc(var(--timeline-top-offset) + 12px);
+        bottom: calc(var(--timeline-bottom-offset) + 6px);
     }
 
     .event-card {
