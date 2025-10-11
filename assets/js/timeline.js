@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainLine = document.querySelector('.timeline-main');
     const zoomLevelEl = document.querySelector('.zoom-level');
     const zoomButtons = document.querySelectorAll('.zoom-btn');
-    const minimap = document.querySelector('.minimap-track');
+    const minimapContainer = document.querySelector('.minimap');
+    const minimapTrack = document.querySelector('.minimap-track');
     const minimapViewport = document.querySelector('.minimap-viewport');
     const yearIndicator = document.querySelector('.year-indicator');
     const yearBadge = document.querySelector('.year-badge');
@@ -115,6 +116,109 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!shell || !wrapper || !inner || !mainLine) {
         console.error('Missing timeline container elements.');
         return;
+    }
+
+    const setupAutoHideRegion = (element, { collapsedClass, bodyClass, delay = 2000 } = {}) => {
+        const controller = {
+            collapse: () => {},
+            expand: () => {},
+            schedule: () => {}
+        };
+
+        if (!element) {
+            return controller;
+        }
+
+        let collapseTimer = null;
+
+        const applyCollapsed = () => {
+            if (collapsedClass) {
+                element.classList.add(collapsedClass);
+            }
+            if (bodyClass) {
+                document.body.classList.add(bodyClass);
+            }
+        };
+
+        const clearCollapsed = () => {
+            if (collapsedClass) {
+                element.classList.remove(collapsedClass);
+            }
+            if (bodyClass) {
+                document.body.classList.remove(bodyClass);
+            }
+        };
+
+        const clearTimer = () => {
+            if (collapseTimer !== null) {
+                clearTimeout(collapseTimer);
+                collapseTimer = null;
+            }
+        };
+
+        const scheduleCollapse = () => {
+            clearTimer();
+            collapseTimer = window.setTimeout(() => {
+                applyCollapsed();
+            }, delay);
+        };
+
+        const handleEnter = () => {
+            clearTimer();
+            clearCollapsed();
+        };
+
+        const handleLeave = () => {
+            scheduleCollapse();
+        };
+
+        element.addEventListener('pointerenter', handleEnter);
+        element.addEventListener('pointerleave', handleLeave);
+        element.addEventListener('focusin', handleEnter);
+        element.addEventListener('focusout', (event) => {
+            if (!element.contains(event.relatedTarget)) {
+                scheduleCollapse();
+            }
+        });
+
+        scheduleCollapse();
+
+        return {
+            collapse: () => {
+                clearTimer();
+                applyCollapsed();
+            },
+            expand: () => {
+                clearTimer();
+                clearCollapsed();
+            },
+            schedule: () => {
+                scheduleCollapse();
+            }
+        };
+    };
+
+    const headerAutoHide = setupAutoHideRegion(headerBar, {
+        collapsedClass: 'is-collapsed',
+        bodyClass: 'layout-header-collapsed',
+        delay: 2200
+    });
+
+    const minimapAutoHide = setupAutoHideRegion(minimapContainer, {
+        collapsedClass: 'is-collapsed',
+        bodyClass: 'layout-minimap-collapsed',
+        delay: 2200
+    });
+
+    const collapseInterfaceChrome = () => {
+        headerAutoHide.collapse();
+        minimapAutoHide.collapse();
+    };
+
+    if (shell) {
+        shell.addEventListener('pointerdown', collapseInterfaceChrome);
+        shell.addEventListener('wheel', collapseInterfaceChrome, { passive: true });
+        shell.addEventListener('touchstart', collapseInterfaceChrome, { passive: true });
     }
 
     const parseDate = (value) => {
@@ -357,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const layoutMinimapLabels = () => {
-        if (!minimap) return;
+        if (!minimapTrack) return;
 
-        const labels = Array.from(minimap.querySelectorAll('.minimap-period-label'));
+        const labels = Array.from(minimapTrack.querySelectorAll('.minimap-period-label'));
         if (!labels.length) return;
 
         labels.forEach((label) => {
@@ -607,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mini.style.left = `${(start / baseWidth) * 100}%`;
             mini.style.width = `${(width / baseWidth) * 100}%`;
             mini.style.top = `${minimapLaneBase + period.lane * minimapLaneSpacing}%`;
-            minimap.appendChild(mini);
+            minimapTrack.appendChild(mini);
 
             const miniLabel = document.createElement('div');
             miniLabel.className = 'minimap-period-label';
@@ -615,7 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
             miniLabel.title = period.name;
             miniLabel.style.left = `${(start / baseWidth) * 100}%`;
             miniLabel.style.width = `${(width / baseWidth) * 100}%`;
-            minimap.appendChild(miniLabel);
+            minimapTrack.appendChild(miniLabel);
         });
 
         requestAnimationFrame(layoutMinimapLabels);
@@ -733,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const mini = document.createElement('div');
             mini.className = 'minimap-event';
             mini.style.left = `${(position / baseWidth) * 100}%`;
-            minimap.appendChild(mini);
+            minimapTrack.appendChild(mini);
         });
     };
 
@@ -1030,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     minimapViewport.addEventListener('pointerdown', (event) => {
         event.preventDefault();
-        const rect = minimap.getBoundingClientRect();
+        const rect = minimapTrack.getBoundingClientRect();
         const viewportRect = minimapViewport.getBoundingClientRect();
         const offsetWithin = event.clientX - viewportRect.left;
 
@@ -1049,9 +1153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('pointerup', onPointerUp);
     });
 
-    minimap.addEventListener('pointerdown', (event) => {
+    minimapTrack.addEventListener('pointerdown', (event) => {
         if (event.target === minimapViewport) return;
-        const rect = minimap.getBoundingClientRect();
+        const rect = minimapTrack.getBoundingClientRect();
         const viewRatio = minimapViewport.offsetWidth / rect.width;
         const availableRatio = Math.max(0, 1 - viewRatio);
         const rawRatio = clamp((event.clientX - rect.left) / rect.width, 0, 1);
